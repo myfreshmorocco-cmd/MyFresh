@@ -95,7 +95,6 @@ section{padding:96px 0;}
 .hn-n{font-size:26px;font-weight:900;color:var(--navy);display:block;}
 .hn-l{font-size:10px;color:rgba(8,9,130,.5);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
 
-/* phone mockup */
 .phone-wrap{position:relative;animation:fadeUp .8s .2s ease both;}
 .phone{width:290px;height:540px;background:var(--navy);border:1px solid rgba(1,174,241,.3);border-radius:40px;margin:0 auto;overflow:hidden;box-shadow:0 40px 80px rgba(8,9,130,.35),inset 0 1px 0 rgba(255,255,255,.1);}
 .pscreen{padding:20px 16px;height:100%;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
@@ -314,7 +313,7 @@ section{padding:96px 0;}
 .slide-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;}
 .slide-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;}
 .slide-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;}
-.slide-nav-btn{width:42px;height:42px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:50%;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.3s;}
+.slide-nav-btn{width:42px;height:52px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:50%;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.3s;}
 .slide-nav-btn:hover{background:var(--yellow);color:var(--navy);border-color:var(--yellow);}
 .slide-dots{display:flex;gap:8px;}
 .sdot2{width:8px;height:8px;background:rgba(255,255,255,.2);border-radius:50%;cursor:pointer;transition:.3s;}
@@ -340,7 +339,7 @@ section{padding:96px 0;}
 footer{background:var(--navy2);padding:56px 0 26px;position:relative;overflow:hidden;}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--yellow),var(--sky));}
 .f-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
-.f-brand-name{font-size:24px;font-weight:900;color:#fff;margin-bottom:10px;}
+.f-brand-name{font-size:24px;font-weight:900;margin-bottom:10px;}
 .f-brand-name span{color:var(--yellow);}
 .f-tag{font-size:14px;font-style:italic;color:rgba(255,255,255,.5);margin-bottom:22px;line-height:1.5;font-weight:500;}
 .f-socials{display:flex;gap:10px;}
@@ -436,10 +435,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">
-    <img src="logo.png" alt="MyFRESH Logo" style="width:44px;height:44px;object-fit:contain;border-radius:10px;" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'">
-    <div id="logo-fallback" style="display:none;width:44px;height:44px;border:2px dashed rgba(1,174,241,.5);border-radius:12px;align-items:center;justify-content:center;color:rgba(1,174,241,.6);font-size:9px;font-weight:700;text-align:center;line-height:1.3;">LOGO<br>ICI</div>
-    <span class="logo-txt">My<span>FRESH</span></span>
+    <a href="#hero" class="nav-logo">
+    <img src="logo-nav.png" alt="MyFRESH" style="height:44px;width:auto;object-fit:contain;border-radius:10px;" onerror="this.style.display='none';document.getElementById('nav-logo-fb').style.display='flex'">
+    <div id="nav-logo-fb" style="display:none;width:44px;height:44px;border:2px dashed rgba(1,174,241,.5);border-radius:12px;align-items:center;justify-content:center;color:rgba(1,174,241,.6);font-size:9px;font-weight:700;text-align:center;line-height:1.3;">LOGO</div>
   </a>
   <ul class="nav-links">
     <li><a href="#how" data-i="nav.how">Comment Ça Marche</a></li>
@@ -493,7 +491,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     <div class="phone-wrap">
       <div class="phone">
         <div class="pscreen">
-          <div class="ph-hdr"><span class="ph-logo">My<span>FRESH</span></span></div>
+          <div class="ph-hdr"><span class="ph-logo"><span style="color:var(--yellow)">My</span><span style="color:#fff">FRESH</span></span></div>
           <div class="ph-card"><div class="ph-tiny">Commande En Cours</div><div class="ph-name">Lot Vêtements × 8 Pcs</div><div class="ph-status"><span class="sdot"></span> En Lavage...</div></div>
           <div class="ph-track">
             <div class="ph-track-t">Suivi En Temps Réel</div>
@@ -558,8 +556,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="svc-c rv" style="transition-delay:.15s"><div class="svc-in"><div class="svc-ic">🧺</div><span class="svc-tag" data-i="v.eco">Économique</span><div class="svc-h" data-i="v2.t">Lavage Par Lot (Sans Repassage)</div><p class="svc-p" data-i="v2.d">Lavage En Lot Pour Votre Quotidien. Idéal Pour Les Étudiants Avec Un Volume Important De Linge.</p><div class="svc-arr">→</div></div></div>
       <div class="svc-c rv" style="transition-delay:.2s"><div class="svc-in"><div class="svc-ic">🏠</div><span class="svc-tag" data-i="v.hm">À Domicile</span><div class="svc-h" data-i="v3.t">Repassage À Domicile Sur RDV</div><p class="svc-p" data-i="v3.d">Notre Agent Se Déplace Chez Vous Selon Votre Disponibilité Pour Repasser Vos Vêtements Sur Place.</p><div class="svc-arr">→</div></div></div>
       <div class="svc-c rv" style="transition-delay:.25s"><div class="svc-in"><div class="svc-ic">👟</div><span class="svc-tag" data-i="v.sp">Spécialité Maison</span><div class="svc-h" data-i="v4.t">Nettoyage Chaussures</div><p class="svc-p" data-i="v4.d">Sneakers, Chaussures De Ville Et Bottes Remises À Neuf. Un Traitement Professionnel Et Soigné.</p><div class="svc-arr">→</div></div></div>
-      <div class="svc-c rv" style="transition-delay:.3s"><div class="svc-in"><div class="svc-ic">🛏️</div><span class="svc-tag" data-i="v.mai">Maison & Confort</span><div class="svc-h" data-i="v5.t">Literie & Couette</div><p class="svc-p" data-i="v5.d">Lavage En Profondeur De Votre Literie, Couettes Et Draps. Hygiène Et Fraîcheur Garanties.</p><div class="svc-arr">→</div></div></div>
-      <div class="svc-c prem rv" style="transition-delay:.35s"><div class="svc-in"><div class="svc-ic">🌟</div><span class="svc-tag" data-i="v.ex">Exclusif — Abonnement Premium</span><div class="svc-h" data-i="v6.t">Rideaux, Coussins & Nounours</div><p class="svc-p" data-i="v6.d">Abonnez-vous et accédez à tous nos services à tarif préférentiel. Priorité de prise en charge, suivi renforcé et flexibilité totale sur l'ensemble de la gamme.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c rv" style="transition-delay:.3s"><div class="svc-in"><div class="svc-ic">🛏️</div><span class="svc-tag" data-i="v.mai">Maison & Confort</span><div class="svc-h" data-i="v5.t">Literie & Rideaux</div><p class="svc-p" data-i="v5.d">Lavage En Profondeur De Votre Literie, Couettes Et Draps. Hygiène Et Fraîcheur Garanties.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c prem rv" style="transition-delay:.35s"><div class="svc-in"><div class="svc-ic">🌟</div><span class="svc-tag" data-i="v.ex">Exclusif — Abonnement Premium</span><div class="svc-h" data-i="v6.t">Abonnement</div><p class="svc-p" data-i="v6.d">Abonnez-vous et accédez à tous nos services à tarif préférentiel. Priorité de prise en charge, suivi renforcé et flexibilité totale sur l'ensemble de la gamme.</p><div class="svc-arr">→</div></div></div>
     </div>
   </div>
 </section>
@@ -600,7 +598,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="form-box">
           <div class="form-title" data-i="form.title">📋 Votre Commande</div>
           <form id="mf" action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="4464b3bd-4344-4161-b5a6-185e9687aa49">
+            <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS_ICI">
             <input type="hidden" name="subject" value="🧺 Nouvelle Commande MyFRESH">
             <input type="hidden" name="from_name" value="Site MyFRESH">
             <input type="hidden" id="rth" name="replyto" value="">
@@ -638,7 +636,23 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
             <div class="fg"><label data-i="f.nt">Instructions Spéciales Pour Votre Commande</label><textarea name="Instructions" class="fc" rows="3" placeholder="Ex: Attention tissu délicat, parfum préféré, code d'accès résidence..."></textarea></div>
             <button type="submit" class="fsub" data-i="f.sub">✦ Envoyer Ma Commande</button>
           </form>
-          <div class="form-success" id="fs"><span class="fs-icon">✅</span><h3 data-i="ok.t">Commande Envoyée !</h3><p data-i="ok.d">Nous Vous Contactons Dans Les 30 Minutes Pour Confirmer Le Ramassage. Merci De Faire Confiance À MyFRESH !</p></div>
+          <div class="form-success" id="fs">
+  <span class="fs-icon">✅</span>
+  <h3 data-i="ok.t" style="color:#fff;font-size:20px;font-weight:900;margin-bottom:10px;">Commande Envoyée !</h3>
+  <p data-i="ok.d" style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.7;margin-bottom:20px;">Nous Vous Contactons Dans Les 30 Minutes Pour Confirmer Le Ramassage. Merci De Faire Confiance À MyFRESH !</p>
+  <div style="background:rgba(255,232,23,.1);border:1px solid rgba(255,232,23,.25);border-radius:14px;padding:16px 20px;text-align:left;margin-bottom:20px;">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--yellow);margin-bottom:10px;">Prochaines Étapes</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.7);line-height:2;">
+      📞 Appel de confirmation sous 30 min<br>
+      🚗 Ramassage à votre adresse<br>
+      🫧 Lavage & traitement professionnel<br>
+      🏠 Livraison à votre porte<br>
+    </div>
+  </div>
+  <a href="login.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--navy);padding:13px 26px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;transition:.3s;">
+    👤 Suivre Ma Commande
+  </a>
+</div>
         </div>
       </div>
     </div>
@@ -724,7 +738,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
           <button class="star-btn" onclick="setStar(5)">★</button>
         </div>
         <form id="rf" action="https://api.web3forms.com/submit" method="POST">
-          <input type="hidden" name="access_key" value="4464b3bd-4344-4161-b5a6-185e9687aa49">
+          <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS_ICI">
           <input type="hidden" name="subject" value="⭐ Nouvel Avis MyFRESH">
           <input type="hidden" id="star-val" name="Note" value="5 étoiles">
           <div class="review-grid">
@@ -849,7 +863,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   <div class="ctnr">
     <div class="f-grid">
       <div>
-        <div class="f-brand-name">My<span>FRESH</span></div>
+        <div class="f-brand-name"><span style="color:var(--yellow)">My</span><span style="color:#fff">FRESH</span></div>
         <p class="f-tag">"Ton Linge Propre, Avec Zéro Effort."</p>
         <div class="f-socials">
           <!-- WhatsApp -->
