@@ -14,8 +14,8 @@ body{font-family:'Montserrat',sans-serif;background:#e8f4ff;color:#080982;min-he
 /* ── SIDEBAR ── */
 .sidebar{width:260px;background:var(--navy);border-right:1px solid rgba(1,174,241,.15);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:.3s;box-shadow:4px 0 24px rgba(8,9,130,.15);}
 .sb-logo{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08);}
-.sb-logo-txt{font-size:22px;font-weight:900;color:#fff;}
-.sb-logo-txt span{color:var(--yellow);}
+.sb-logo-txt{font-size:22px;font-weight:900;color:var(--yellow);}
+.sb-logo-txt span{color:#fff;}
 .sb-role{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:4px;}
 .sb-nav{flex:1;padding:20px 12px;overflow-y:auto;}
 .sb-section{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);margin:16px 8px 8px;}
@@ -26,7 +26,7 @@ body{font-family:'Montserrat',sans-serif;background:#e8f4ff;color:#080982;min-he
 .sb-badge{margin-left:auto;background:var(--yellow);color:var(--navy);font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;}
 .sb-footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);}
 .sb-user{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.sb-av{width:36px;height:36px;background:linear-gradient(135deg,var(--sky),var(--navy2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0;}
+.sb-av{width:36px;height:48px;background:linear-gradient(135deg,var(--sky),var(--navy2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0;}
 .sb-user-name{font-size:13px;font-weight:700;color:#fff;}
 .sb-user-role{font-size:10px;color:rgba(255,255,255,.4);}
 .logout-btn{width:100%;background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.2);color:#ff6b6b;padding:10px;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:.25s;}
@@ -174,7 +174,7 @@ tr:hover td{background:rgba(1,174,241,.03);}
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sb-logo">
-    <div class="sb-logo-txt">My<span>FRESH</span></div>
+    <div class="sb-logo-txt"><span>My</span>FRESH</div>
     <div class="sb-role">Tableau De Bord Admin</div>
   </div>
   <nav class="sb-nav">
@@ -185,7 +185,7 @@ tr:hover td{background:rgba(1,174,241,.03);}
     <div class="sb-section">Outils</div>
     <button class="sb-link" onclick="showSection('stats')"><span class="sb-link-ic">📈</span> Statistiques</button>
     <button class="sb-link" onclick="showSection('reviews')"><span class="sb-link-ic">⭐</span> Avis Clients</button>
-    <button class="sb-link" onclick="window.open('myfresh.html')"><span class="sb-link-ic">🌐</span> Voir Le Site</button>
+    <button class="sb-link" onclick="window.open('index.html')"><span class="sb-link-ic">🌐</span> Voir Le Site</button>
   </nav>
   <div class="sb-footer">
     <div class="sb-user">
@@ -333,8 +333,18 @@ let currentOrderId = null;
 (async()=>{
   const { data:{ session } } = await sb.auth.getSession();
   if(!session){ window.location.href='login.html'; return; }
-  const { data:profile } = await sb.from('profiles').select('*').eq('id',session.user.id).single();
-  if(!profile || profile.role !== 'admin'){ window.location.href='dashboard-client.html'; return; }
+  const { data:profile } = await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+  console.log('Admin guard profile:', profile);
+  if(!profile){
+    // Profile missing — retry after 2s
+    await new Promise(r=>setTimeout(r,2000));
+    const { data:p2 } = await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+    if(!p2 || p2.role !== 'admin'){ window.location.href='dashboard-client.html'; return; }
+    document.getElementById('admin-name').textContent = p2.nom || session.user.email;
+    document.getElementById('admin-av').textContent = (p2.nom||'A')[0].toUpperCase();
+    loadAll(); subscribeRealtime(); return;
+  }
+  if(profile.role !== 'admin'){ window.location.href='dashboard-client.html'; return; }
   document.getElementById('admin-name').textContent = profile.nom || session.user.email;
   document.getElementById('admin-av').textContent = (profile.nom||'A')[0].toUpperCase();
   loadAll();
