@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyFRESH — Mon Espace</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',sans-serif;background:#f4fafd;color:#080982;min-height:100vh;}
+:root{--navy:#080982;--sky:#01AEF1;--mint:#CCEDEE;--yellow:#FFE817;--white:#fff;--bg:#f4fafd;--soft:#e4f4f8;}
+
+/* ── TOP NAV ── */
+.topnav{background:var(--navy);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.2);}
+.nav-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;}
+.nav-logo span{color:var(--yellow);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-user{display:flex;align-items:center;gap:10px;}
+.nav-av{width:36px;height:36px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;}
+.nav-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);}
+.nav-site{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;transition:.2s;}
+.nav-site:hover{color:var(--sky);}
+.logout-nav{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.25);color:#ff8080;padding:8px 16px;border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:.25s;}
+.logout-nav:hover{background:rgba(255,80,80,.25);}
+
+/* ── LAYOUT ── */
+.page{max-width:1100px;margin:0 auto;padding:32px 24px;}
+
+/* ── GREETING ── */
+.greeting{background:var(--navy);border-radius:24px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;}
+.greeting::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;background:radial-gradient(circle,rgba(1,174,241,.2) 0%,transparent 70%);}
+.greeting::after{content:'';position:absolute;bottom:-40px;left:100px;width:150px;height:150px;background:radial-gradient(circle,rgba(255,232,23,.1) 0%,transparent 70%);}
+.greeting-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(1,174,241,.8);margin-bottom:8px;}
+.greeting-h{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:900;color:#fff;margin-bottom:8px;}
+.greeting-h span{color:var(--yellow);}
+.greeting-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:500px;}
+.greeting-cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;background:var(--yellow);color:var(--navy);padding:12px 24px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;transition:.3s;}
+.greeting-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,232,23,.4);}
+
+/* ── KPI MINI ── */
+.kpi-mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.kpi-mini{background:#fff;border:1px solid rgba(1,174,241,.12);border-radius:18px;padding:20px;transition:.3s;position:relative;overflow:hidden;}
+.kpi-mini::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--navy));}
+.kpi-mini:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(8,9,130,.1);}
+.kmi-val{font-size:28px;font-weight:900;color:var(--navy);line-height:1;}
+.kmi-label{font-size:11px;font-weight:700;color:#8a9ab0;text-transform:uppercase;letter-spacing:1px;margin-top:6px;}
+.kmi-icon{position:absolute;right:16px;top:16px;font-size:24px;opacity:.3;}
+
+/* ── LAST ORDER CARD ── */
+.last-order{background:#fff;border:1px solid rgba(1,174,241,.12);border-radius:22px;padding:28px;margin-bottom:28px;}
+.lo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.lo-title{font-size:16px;font-weight:900;color:var(--navy);}
+.lo-id{font-size:11px;color:#8a9ab0;font-weight:600;margin-top:2px;}
+.lo-status-wrap{text-align:right;}
+/* timeline */
+.lo-timeline{position:relative;margin-bottom:20px;}
+.lot-steps{display:flex;justify-content:space-between;position:relative;z-index:1;}
+.lot-steps::before{content:'';position:absolute;top:17px;left:0;right:0;height:2px;background:rgba(8,9,130,.1);z-index:0;}
+.lot-step{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;}
+.lot-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(8,9,130,.08);border:2px solid rgba(8,9,130,.1);position:relative;z-index:2;transition:.5s;}
+.lot-dot.done{background:var(--sky);border-color:var(--sky);}
+.lot-dot.actv{background:var(--yellow);border-color:var(--yellow);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,232,23,.4)}50%{box-shadow:0 0 0 8px rgba(255,232,23,0)}}
+.lot-label{font-size:10px;font-weight:700;color:rgba(8,9,130,.4);text-align:center;max-width:70px;line-height:1.3;}
+.lot-step.done .lot-label{color:var(--sky);}
+.lot-step.actv .lot-label{color:var(--navy);font-weight:800;}
+/* progress bar */
+.lo-progress{height:6px;background:rgba(8,9,130,.08);border-radius:3px;margin:16px 0;overflow:hidden;}
+.lo-bar{height:100%;background:linear-gradient(90deg,var(--sky),var(--navy));border-radius:3px;transition:width 1s ease;}
+/* admin comment */
+.lo-comment{background:rgba(1,174,241,.06);border:1px solid rgba(1,174,241,.15);border-radius:12px;padding:14px 16px;}
+.lo-comment-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sky);margin-bottom:6px;}
+.lo-comment-txt{font-size:13px;color:rgba(8,9,130,.7);line-height:1.6;font-style:italic;}
+.lo-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+.lo-meta-item{background:var(--bg);border-radius:10px;padding:12px 14px;}
+.lo-meta-label{font-size:10px;font-weight:700;color:#8a9ab0;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.lo-meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+
+/* ── HISTORY ── */
+.history-wrap{background:#fff;border:1px solid rgba(1,174,241,.12);border-radius:22px;padding:28px;margin-bottom:28px;}
+.hw-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.hw-title{font-size:16px;font-weight:900;color:var(--navy);}
+.hist-list{display:flex;flex-direction:column;gap:12px;}
+.hist-item{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg);border-radius:14px;border:1px solid rgba(1,174,241,.1);transition:.25s;cursor:pointer;}
+.hist-item:hover{border-color:var(--sky);background:rgba(1,174,241,.04);}
+.hist-left{display:flex;align-items:center;gap:14px;}
+.hist-ic{width:40px;height:40px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.hist-name{font-size:13px;font-weight:800;color:var(--navy);}
+.hist-date{font-size:11px;color:#8a9ab0;margin-top:2px;}
+.hist-right{text-align:right;}
+.hist-total{font-size:15px;font-weight:900;color:var(--navy);}
+.hist-status{margin-top:4px;}
+
+/* status badge */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.badge.attente{background:rgba(255,232,23,.15);color:#b8940a;border:1px solid rgba(255,232,23,.3);}
+.badge.cours{background:rgba(1,174,241,.12);color:var(--sky);border:1px solid rgba(1,174,241,.25);}
+.badge.pret{background:rgba(78,255,145,.12);color:#00a86b;border:1px solid rgba(78,255,145,.3);}
+.badge.livre{background:rgba(78,255,145,.2);color:#00a86b;border:1px solid rgba(78,255,145,.4);}
+.badge.annule{background:rgba(255,80,80,.1);color:#e53935;border:1px solid rgba(255,80,80,.2);}
+
+/* empty */
+.empty-state{text-align:center;padding:48px 20px;color:#8a9ab0;}
+.empty-icon{font-size:48px;margin-bottom:12px;display:block;}
+.empty-title{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.empty-sub{font-size:13px;line-height:1.6;}
+
+/* profile card */
+.profile-wrap{background:#fff;border:1px solid rgba(1,174,241,.12);border-radius:22px;padding:28px;}
+.profile-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(8,9,130,.08);}
+.profile-av{width:60px;height:60px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:24px;}
+.profile-name{font-size:20px;font-weight:900;color:var(--navy);}
+.profile-email{font-size:13px;color:#8a9ab0;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.profile-field{background:var(--bg);border-radius:12px;padding:14px 16px;}
+.pf-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#8a9ab0;margin-bottom:5px;}
+.pf-val{font-size:14px;font-weight:700;color:var(--navy);}
+
+/* ── LIVE BADGE ── */
+.live-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:#00c853;text-transform:uppercase;letter-spacing:1px;}
+.live-dot{width:7px;height:7px;background:#00c853;border-radius:50%;animation:pulse2 1.5s infinite;}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── TABS ── */
+.page-tabs{display:flex;gap:4px;background:rgba(8,9,130,.06);border-radius:14px;padding:4px;margin-bottom:28px;}
+.ptab{flex:1;padding:11px;border-radius:11px;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:rgba(8,9,130,.45);background:transparent;transition:.25s;}
+.ptab.on{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(8,9,130,.1);}
+
+/* loading skeleton */
+.skel{background:linear-gradient(90deg,rgba(8,9,130,.06) 25%,rgba(8,9,130,.1) 50%,rgba(8,9,130,.06) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:16px;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);border:1px solid rgba(1,174,241,.3);border-radius:14px;padding:14px 20px;font-size:13px;font-weight:700;color:#fff;z-index:500;transform:translateY(80px);opacity:0;transition:.35s;box-shadow:0 8px 30px rgba(0,0,0,.15);}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* responsive */
+@media(max-width:720px){
+  .kpi-mini-grid{grid-template-columns:1fr 1fr;}
+  .lo-meta{grid-template-columns:1fr;}
+  .profile-grid{grid-template-columns:1fr;}
+  .lot-label{font-size:9px;max-width:50px;}
+  .topnav{padding:0 16px;}
+  .page{padding:20px 14px;}
+  .greeting{padding:24px 22px;}
+}
+@media(max-width:480px){
+  .kpi-mini-grid{grid-template-columns:1fr 1fr;}
+  .nav-site,.nav-name{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="myfresh.html" class="nav-logo">My<span>FRESH</span></a>
+  <div class="nav-right">
+    <a href="myfresh.html" class="nav-site">← Site Principal</a>
+    <div class="nav-user">
+      <div class="nav-av" id="nav-av">?</div>
+      <span class="nav-name" id="nav-name">Chargement...</span>
+    </div>
+    <button class="logout-nav" onclick="doLogout()">Déconnexion</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- GREETING -->
+  <div class="greeting">
+    <div class="greeting-tag">Mon Espace MyFRESH</div>
+    <div class="greeting-h">Bonjour, <span id="client-name">...</span> 👋</div>
+    <div class="greeting-sub">Suivez vos commandes en temps réel, consultez votre historique et gérez votre profil depuis cet espace personnel.</div>
+    <a href="myfresh.html#order" class="greeting-cta">✦ Passer Une Nouvelle Commande</a>
+  </div>
+
+  <!-- KPI MINI -->
+  <div class="kpi-mini-grid">
+    <div class="kpi-mini"><span class="kmi-icon">📦</span><div class="kmi-val" id="kmi-total">—</div><div class="kmi-label">Commandes</div></div>
+    <div class="kpi-mini"><span class="kmi-icon">✅</span><div class="kmi-val" id="kmi-livrees">—</div><div class="kmi-label">Livrées</div></div>
+    <div class="kpi-mini"><span class="kmi-icon">⏳</span><div class="kmi-val" id="kmi-en-cours">—</div><div class="kmi-label">En Cours</div></div>
+    <div class="kpi-mini"><span class="kmi-icon">⭐</span><div class="kmi-val" id="kmi-rating">—</div><div class="kmi-label">Note Moy.</div></div>
+  </div>
+
+  <!-- PAGE TABS -->
+  <div class="page-tabs">
+    <button class="ptab on" onclick="showTab('tracking')">📦 Ma Dernière Commande</button>
+    <button class="ptab" onclick="showTab('history')">🕐 Historique</button>
+    <button class="ptab" onclick="showTab('profile')">👤 Mon Profil</button>
+  </div>
+
+  <!-- TAB: TRACKING -->
+  <div id="tab-tracking">
+    <div class="last-order" id="last-order-card">
+      <div style="text-align:center;padding:40px 20px;color:#8a9ab0;">
+        <div style="font-size:36px;margin-bottom:12px;">⏳</div>
+        <div style="font-size:14px;font-weight:700;">Chargement de votre commande...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: HISTORY -->
+  <div id="tab-history" style="display:none;">
+    <div class="history-wrap">
+      <div class="hw-header">
+        <div class="hw-title">Historique Des Commandes</div>
+        <div class="live-tag"><span class="live-dot"></span> Temps Réel</div>
+      </div>
+      <div class="hist-list" id="hist-list">
+        <div class="empty-state"><span class="empty-icon">📋</span><div class="empty-title">Chargement...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PROFILE -->
+  <div id="tab-profile" style="display:none;">
+    <div class="profile-wrap">
+      <div class="profile-header">
+        <div class="profile-av" id="prof-av">?</div>
+        <div>
+          <div class="profile-name" id="prof-name">—</div>
+          <div class="profile-email" id="prof-email">—</div>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div class="profile-field"><div class="pf-label">Téléphone</div><div class="pf-val" id="prof-tel">—</div></div>
+        <div class="profile-field"><div class="pf-label">Rôle</div><div class="pf-val" id="prof-role">Client</div></div>
+        <div class="profile-field"><div class="pf-label">Membre Depuis</div><div class="pf-val" id="prof-since">—</div></div>
+        <div class="profile-field"><div class="pf-label">Total Commandes</div><div class="pf-val" id="prof-total">—</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://fwtwusqyrglpnfdttwlt.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3dHd1c3F5cmdscG5mZHR0d2x0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjMwMDQsImV4cCI6MjA5MDgzOTAwNH0.HRy_vF-npCT_3mkgqXuRSx0O8VSdSrtyC4-URLiqcUM'
+);
+
+let currentUser = null;
+let userProfile = null;
+let allOrders = [];
+
+const STEPS = [
+  {key:'En attente', label:'Commande\nConfirmée', icon:'📋'},
+  {key:'En cours',   label:'Ramassage\nEffectué',  icon:'🚗'},
+  {key:'Lavage',     label:'Lavage\nEn Cours',     icon:'🫧'},
+  {key:'Repassage',  label:'Repassage',            icon:'👔'},
+  {key:'Prêt',       label:'Prêt\nÀ Livrer',       icon:'📦'},
+  {key:'Livré',      label:'Livré\nChez Vous',      icon:'🏠'}
+];
+const STATUS_ORDER = {'En attente':0,'En cours':1,'Lavage':2,'Repassage':3,'Prêt':4,'Livré':5,'Annulé':-1};
+
+/* ── AUTH GUARD ── */
+(async()=>{
+  const { data:{ session } } = await sb.auth.getSession();
+  if(!session){ window.location.href='login.html'; return; }
+  currentUser = session.user;
+  const { data:profile } = await sb.from('profiles').select('*').eq('id',session.user.id).single();
+  if(profile?.role==='admin'){ window.location.href='dashboard-admin.html'; return; }
+  userProfile = profile;
+  populateUI();
+  loadOrders();
+  subscribeRealtime();
+})();
+
+function populateUI(){
+  const name = userProfile?.nom || currentUser.email;
+  const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('client-name').textContent = name.split(' ')[0];
+  document.getElementById('nav-name').textContent = name;
+  document.getElementById('nav-av').textContent = initials;
+  document.getElementById('prof-av').textContent = initials;
+  document.getElementById('prof-name').textContent = name;
+  document.getElementById('prof-email').textContent = userProfile?.email || currentUser.email;
+  document.getElementById('prof-tel').textContent = userProfile?.telephone || '—';
+  document.getElementById('prof-role').textContent = 'Client MyFRESH';
+  document.getElementById('prof-since').textContent = fmtDateShort(userProfile?.created_at || currentUser.created_at);
+}
+
+/* ── REALTIME ── */
+function subscribeRealtime(){
+  sb.channel('client-orders-'+currentUser.id)
+    .on('postgres_changes',{event:'*',schema:'public',table:'commandes',filter:'client_id=eq.'+currentUser.id},payload=>{
+      loadOrders();
+      if(payload.new?.statut){
+        showToast('🔔 Statut mis à jour : '+payload.new.statut);
+      }
+    }).subscribe();
+}
+
+/* ── LOAD ORDERS ── */
+async function loadOrders(){
+  const { data, error } = await sb.from('commandes')
+    .select('*')
+    .eq('client_id', currentUser.id)
+    .order('created_at',{ascending:false});
+  if(error){ console.error(error); return; }
+  allOrders = data || [];
+  updateKPIs();
+  renderLastOrder();
+  renderHistory();
+  document.getElementById('prof-total').textContent = allOrders.length;
+}
+
+/* ── KPIs ── */
+function updateKPIs(){
+  document.getElementById('kmi-total').textContent = allOrders.length;
+  document.getElementById('kmi-livrees').textContent = allOrders.filter(o=>o.statut==='Livré').length;
+  document.getElementById('kmi-en-cours').textContent = allOrders.filter(o=>['En cours','Lavage','Repassage','Prêt'].includes(o.statut)).length;
+  document.getElementById('kmi-rating').textContent = '5 ★';
+}
+
+/* ── LAST ORDER ── */
+function renderLastOrder(){
+  const card = document.getElementById('last-order-card');
+  if(!allOrders.length){
+    card.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">🧺</span>
+        <div class="empty-title">Aucune Commande Encore</div>
+        <div class="empty-sub">Passez votre première commande et suivez son évolution en temps réel depuis cet espace.</div>
+        <a href="myfresh.html#order" style="display:inline-flex;align-items:center;gap:7px;margin-top:20px;background:var(--navy);color:#fff;padding:12px 24px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;">✦ Commander Maintenant</a>
+      </div>`;
+    return;
+  }
+  const o = allOrders[0];
+  const stepIdx = STATUS_ORDER[o.statut] ?? 0;
+  const pct = Math.round((Math.max(0,stepIdx)/5)*100);
+  card.innerHTML = `
+    <div class="lo-header">
+      <div>
+        <div class="lo-title">${esc(o.services||'Commande MyFRESH')}</div>
+        <div class="lo-id">Réf. #${o.id.slice(0,8).toUpperCase()} · ${fmtDateShort(o.created_at)}</div>
+      </div>
+      <div class="lo-status-wrap">
+        ${statusBadge(o.statut)}
+        <div class="live-tag" style="margin-top:6px;justify-content:flex-end;"><span class="live-dot"></span> Temps Réel</div>
+      </div>
+    </div>
+    <div class="lo-timeline">
+      <div class="lot-steps">
+        ${STEPS.map((s,i)=>{
+          const isDone = stepIdx > i;
+          const isActv = stepIdx === i && o.statut !== 'Annulé';
+          return `<div class="lot-step ${isDone?'done':isActv?'actv':''}">
+            <div class="lot-dot ${isDone?'done':isActv?'actv':''}">${isDone?'✓':s.icon}</div>
+            <div class="lot-label">${s.label}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="lo-progress"><div class="lo-bar" style="width:${pct}%"></div></div>
+    ${o.commentaire_admin ? `
+    <div class="lo-comment" style="margin-bottom:16px;">
+      <div class="lo-comment-label">💬 Message De Notre Équipe</div>
+      <div class="lo-comment-txt">${esc(o.commentaire_admin)}</div>
+    </div>` : ''}
+    <div class="lo-meta">
+      <div class="lo-meta-item"><div class="lo-meta-label">Adresse De Livraison</div><div class="lo-meta-val">${esc(o.adresse||'—')}</div></div>
+      <div class="lo-meta-item"><div class="lo-meta-label">Créneau Horaire</div><div class="lo-meta-val">${esc(o.creneau||'—')}</div></div>
+      <div class="lo-meta-item"><div class="lo-meta-label">Date Souhaitée</div><div class="lo-meta-val">${o.date_souhaitee||'—'}</div></div>
+      <div class="lo-meta-item"><div class="lo-meta-label">Total Estimé</div><div class="lo-meta-val" style="color:var(--navy);font-size:16px;">${o.total_estime?o.total_estime+' MAD':'—'}</div></div>
+    </div>
+    ${o.note ? `<div style="margin-top:12px;padding:12px 16px;background:var(--bg);border-radius:10px;font-size:12px;color:#6a7a90;"><strong>Votre Note :</strong> ${esc(o.note)}</div>` : ''}
+  `;
+}
+
+/* ── HISTORY ── */
+function renderHistory(){
+  const list = document.getElementById('hist-list');
+  if(!allOrders.length){
+    list.innerHTML=`<div class="empty-state"><span class="empty-icon">📋</span><div class="empty-title">Aucun Historique</div><div class="empty-sub">Vos commandes apparaîtront ici après votre première commande.</div></div>`;
+    return;
+  }
+  list.innerHTML = allOrders.map((o,i)=>`
+    <div class="hist-item" onclick="scrollToTracking()">
+      <div class="hist-left">
+        <div class="hist-ic">${i===0?'📦':'🗂️'}</div>
+        <div>
+          <div class="hist-name">${esc(o.services||'Commande MyFRESH')}</div>
+          <div class="hist-date">${fmtDate(o.created_at)} · ${esc(o.adresse?.slice(0,30)||'—')}...</div>
+        </div>
+      </div>
+      <div class="hist-right">
+        <div class="hist-total">${o.total_estime?o.total_estime+' MAD':'—'}</div>
+        <div class="hist-status">${statusBadge(o.statut)}</div>
+      </div>
+    </div>`).join('');
+}
+function scrollToTracking(){
+  showTab('tracking');
+}
+
+/* ── TABS ── */
+function showTab(t){
+  ['tracking','history','profile'].forEach(id=>{
+    document.getElementById('tab-'+id).style.display = id===t?'block':'none';
+  });
+  document.querySelectorAll('.ptab').forEach((b,i)=>{
+    b.classList.toggle('on',['tracking','history','profile'][i]===t);
+  });
+}
+
+/* ── HELPERS ── */
+function statusBadge(s){
+  const map={'En attente':'attente','En cours':'cours','Lavage':'cours','Repassage':'cours','Prêt':'pret','Livré':'livre','Annulé':'annule'};
+  const cls=map[s]||'attente';
+  const labels={'En attente':'En Attente','En cours':'En Cours','Lavage':'En Lavage','Repassage':'En Repassage','Prêt':'Prêt','Livré':'Livré ✓','Annulé':'Annulé'};
+  return `<span class="badge ${cls}">${labels[s]||s}</span>`;
+}
+function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function fmtDateShort(d){if(!d)return'—';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+async function doLogout(){await sb.auth.signOut();window.location.href='login.html';}
+</script>
+</body>
+</html>

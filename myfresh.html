@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyFRESH — Votre Plateforme De Lessive Et D'entretien Ménager</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:#f4fafd;color:#080982;overflow-x:hidden;}
+:root{
+  --navy:#080982;--navy2:#05056a;--sky:#01AEF1;--mint:#CCEDEE;
+  --yellow:#FFE817;--white:#fff;--bg:#f4fafd;--soft:#e4f4f8;
+}
+
+/* ─── LANG BAR ─── */
+.lang-bar{position:fixed;top:14px;right:24px;z-index:9999;display:flex;gap:4px;background:rgba(8,9,130,.96);backdrop-filter:blur(16px);border-radius:50px;padding:5px 8px;border:1px solid rgba(255,232,23,.4);box-shadow:0 4px 20px rgba(0,0,0,.3);}
+.lb{background:none;border:none;color:rgba(255,255,255,.45);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;padding:5px 12px;border-radius:30px;transition:.25s;letter-spacing:1px;}
+.lb.on{background:var(--yellow);color:var(--navy);}
+.lb:hover:not(.on){color:#fff;}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:var(--navy);border-bottom:1px solid rgba(1,174,241,.2);box-shadow:0 2px 30px rgba(0,0,0,.3);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-ph{width:44px;height:44px;border:2px dashed rgba(1,174,241,.5);border-radius:12px;display:flex;align-items:center;justify-content:center;color:rgba(1,174,241,.6);font-size:9px;font-weight:700;cursor:pointer;transition:.3s;position:relative;overflow:hidden;flex-shrink:0;text-align:center;line-height:1.2;}
+.logo-ph:hover{border-color:var(--sky);background:rgba(1,174,241,.08);}
+.logo-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:10px;}
+.logo-ph input{display:none;}
+.logo-txt{font-size:21px;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.logo-txt span{color:var(--yellow);}
+.nav-links{display:flex;gap:24px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;transition:.25s;}
+.nav-links a:hover{color:var(--yellow);}
+.nav-cta{background:var(--yellow)!important;color:var(--navy)!important;padding:9px 22px;border-radius:50px;}
+.nav-cta:hover{box-shadow:0 0 20px rgba(255,232,23,.5);transform:scale(1.04);}
+.nav-account{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff!important;padding:9px 18px;border-radius:50px;transition:.3s!important;}
+.nav-account:hover{background:rgba(255,255,255,.15)!important;color:#fff!important;}
+.nav-account .nav-av-dot{width:8px;height:8px;background:#4eff91;border-radius:50%;animation:pulse2 1.5s infinite;}
+.nav-account-logged{display:flex;align-items:center;gap:8px;background:rgba(78,255,145,.1);border:1px solid rgba(78,255,145,.3);color:#4eff91!important;padding:9px 18px;border-radius:50px;transition:.3s!important;}
+.nav-account-logged:hover{background:rgba(78,255,145,.2)!important;}
+.nav-av-mini{width:22px;height:22px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:10px;flex-shrink:0;}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;}
+.nav-ham span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s;}
+.mob-menu{display:none;position:fixed;top:68px;left:0;right:0;background:var(--navy);padding:20px;z-index:999;border-bottom:1px solid rgba(1,174,241,.2);}
+.mob-menu.open{display:block;}
+.mob-menu a{display:block;color:rgba(255,255,255,.8);text-decoration:none;font-size:14px;font-weight:700;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06);text-transform:uppercase;letter-spacing:.5px;}
+.mob-menu a:last-child{border:none;margin-top:10px;background:var(--yellow);color:var(--navy);text-align:center;border-radius:12px;padding:14px;}
+
+/* ─── BASE ─── */
+section{padding:96px 0;}
+.ctnr{max-width:1180px;margin:0 auto;padding:0 40px;}
+.sec-label{display:block;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sky);margin-bottom:10px;}
+.sec-title{font-size:clamp(26px,3.8vw,44px);font-weight:900;line-height:1.08;margin-bottom:14px;}
+.sec-sub{font-size:15px;color:#5a6a80;line-height:1.7;max-width:560px;}
+.sec-sub.w{color:rgba(255,255,255,.6);}
+.sec-hdr{margin-bottom:60px;}
+.white{color:#fff!important;}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+
+/* ══════════════════════════════
+   HERO — fond CCEDEE doux
+══════════════════════════════ */
+#hero{
+  min-height:100vh;
+  background:linear-gradient(135deg, #CCEDEE 0%, #a8dde5 40%, #080982 100%);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;
+  padding-top:68px;
+}
+.hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;}
+.hero-wave svg{display:block;width:100%;}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.ho1{width:600px;height:600px;background:rgba(8,9,130,.15);top:-100px;right:-100px;}
+.ho2{width:400px;height:400px;background:rgba(255,232,23,.12);bottom:50px;left:-80px;}
+.ho3{width:250px;height:250px;background:rgba(1,174,241,.2);top:40%;left:40%;}
+.bbl{position:absolute;border-radius:50%;border:1px solid rgba(8,9,130,.2);opacity:0;animation:rise linear infinite;}
+@keyframes rise{0%{transform:translateY(110vh) scale(.2);opacity:0;}8%{opacity:.3;}92%{opacity:.1;}100%{transform:translateY(-80px) scale(1);opacity:0;}}
+.hero-grid{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:72px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(8,9,130,.1);border:1px solid rgba(8,9,130,.2);color:var(--navy);font-size:10px;font-weight:700;letter-spacing:2px;padding:7px 18px;border-radius:50px;margin-bottom:22px;text-transform:uppercase;animation:fadeUp .8s ease both;}
+.bdot{width:6px;height:6px;background:var(--navy);border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.6)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,58px);font-weight:900;color:var(--navy);line-height:1.08;margin-bottom:18px;animation:fadeUp .8s .1s ease both;}
+.hero-sub{font-size:16px;color:rgba(8,9,130,.7);line-height:1.75;margin-bottom:38px;animation:fadeUp .8s .2s ease both;font-weight:500;}
+.hero-btns{display:flex;gap:14px;animation:fadeUp .8s .3s ease both;flex-wrap:wrap;}
+.btn-y{background:var(--navy);color:#fff;padding:15px 30px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;letter-spacing:.4px;transition:.3s;box-shadow:0 8px 28px rgba(8,9,130,.3);display:inline-flex;align-items:center;gap:7px;}
+.btn-y:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(8,9,130,.45);}
+.btn-g{background:transparent;color:var(--navy);padding:15px 30px;border-radius:50px;font-weight:700;font-size:13px;text-decoration:none;border:2px solid rgba(8,9,130,.3);transition:.3s;}
+.btn-g:hover{border-color:var(--navy);background:rgba(8,9,130,.08);}
+.hero-nums{display:flex;gap:28px;margin-top:44px;padding-top:28px;border-top:1px solid rgba(8,9,130,.12);animation:fadeUp .8s .4s ease both;flex-wrap:wrap;}
+.hn-n{font-size:26px;font-weight:900;color:var(--navy);display:block;}
+.hn-l{font-size:10px;color:rgba(8,9,130,.5);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+
+/* phone mockup */
+.phone-wrap{position:relative;animation:fadeUp .8s .2s ease both;}
+.phone{width:290px;height:540px;background:var(--navy);border:1px solid rgba(1,174,241,.3);border-radius:40px;margin:0 auto;overflow:hidden;box-shadow:0 40px 80px rgba(8,9,130,.35),inset 0 1px 0 rgba(255,255,255,.1);}
+.pscreen{padding:20px 16px;height:100%;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
+.ph-hdr{background:rgba(255,255,255,.07);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:8px;}
+.ph-logo{font-size:14px;font-weight:900;color:#fff;}
+.ph-logo span{color:var(--yellow);}
+.ph-card{background:linear-gradient(135deg,var(--sky),#0560b8);border-radius:14px;padding:16px;color:#fff;}
+.ph-tiny{font-size:9px;opacity:.6;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.ph-name{font-size:14px;font-weight:800;margin:4px 0;}
+.ph-status{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);padding:4px 10px;border-radius:20px;font-size:9px;font-weight:700;margin-top:6px;}
+.sdot{width:5px;height:5px;background:#4eff91;border-radius:50%;}
+.ph-track{background:rgba(255,255,255,.07);border:1px solid rgba(1,174,241,.2);border-radius:14px;padding:12px;}
+.ph-track-t{font-size:9px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.ph-step{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:rgba(255,255,255,.35);margin-bottom:7px;}
+.ph-step.dn{color:rgba(255,255,255,.9);}
+.ph-step.ac{color:var(--sky);}
+.ph-sd{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;}
+.ph-step.dn .ph-sd{background:#4eff91;color:#000;}
+.ph-step.ac .ph-sd{background:var(--sky);color:#fff;animation:pulse 1.5s infinite;}
+.ph-mini{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.ph-mc{background:rgba(255,255,255,.06);border:1px solid rgba(1,174,241,.12);border-radius:10px;padding:8px;text-align:center;}
+.ph-mc .em2{font-size:18px;display:block;margin-bottom:3px;}
+.ph-mc .lb2{font-size:8px;font-weight:700;color:rgba(255,255,255,.6);}
+.fbadge{position:absolute;background:var(--yellow);color:var(--navy);font-size:10px;font-weight:800;padding:7px 14px;border-radius:50px;box-shadow:0 6px 20px rgba(255,232,23,.4);animation:floatY 3s ease-in-out infinite;white-space:nowrap;}
+.fb1{top:50px;right:-15px;}
+.fb2{bottom:100px;left:-25px;animation-delay:1.5s;}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ══════════════════════════════
+   PARTNERS TICKER
+══════════════════════════════ */
+.partners-bar{background:var(--navy);padding:28px 0;overflow:hidden;position:relative;border-top:1px solid rgba(1,174,241,.12);border-bottom:1px solid rgba(1,174,241,.12);}
+.partners-bar::before,.partners-bar::after{content:'';position:absolute;top:0;bottom:0;width:160px;z-index:2;}
+.partners-bar::before{left:0;background:linear-gradient(90deg,var(--navy),transparent);}
+.partners-bar::after{right:0;background:linear-gradient(-90deg,var(--navy),transparent);}
+.partners-label{text-align:center;font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:18px;}
+.ticker-wrap{overflow:hidden;}
+.ticker{display:flex;gap:0;animation:ticker 28s linear infinite;width:max-content;align-items:center;}
+.ticker:hover{animation-play-state:paused;}
+.partner-item{display:flex;align-items:center;flex-shrink:0;padding:0 40px;position:relative;}
+.partner-item::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:1px;height:18px;background:rgba(255,255,255,.1);}
+.partner-name{font-size:12px;font-weight:800;color:rgba(255,255,255,.4);white-space:nowrap;letter-spacing:1.5px;text-transform:uppercase;transition:.3s;}
+.partner-item:hover .partner-name{color:var(--yellow);}
+.partner-dot{width:5px;height:5px;border-radius:50%;background:rgba(1,174,241,.5);margin-right:10px;flex-shrink:0;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ══════════════════════════════
+   HOW IT WORKS
+══════════════════════════════ */
+#how{background:var(--bg);}
+.how-stripe{height:4px;background:linear-gradient(90deg,var(--navy),var(--sky),var(--yellow));}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.step-c{background:#fff;border-radius:22px;padding:36px 24px 32px;text-align:center;position:relative;box-shadow:0 4px 24px rgba(8,9,130,.07);transition:.4s;border:1px solid rgba(1,174,241,.1);}
+.step-c:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(8,9,130,.13);}
+.sn{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;background:var(--navy);color:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;}
+.si{width:76px;height:76px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 20px;box-shadow:0 8px 22px rgba(1,174,241,.28);}
+.step-c h3{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:9px;}
+.step-c p{font-size:13px;color:#6a7a90;line-height:1.65;}
+
+/* ══════════════════════════════
+   SERVICES
+══════════════════════════════ */
+#services{background:#fff;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.svc-c{border-radius:22px;overflow:hidden;cursor:pointer;transition:all .4s cubic-bezier(.175,.885,.32,1.275);}
+.svc-c:hover{transform:translateY(-10px) scale(1.02);}
+.svc-in{background:var(--navy);padding:32px 26px 48px;height:100%;position:relative;overflow:hidden;border:1px solid rgba(1,174,241,.15);border-radius:22px;}
+.svc-in::before{content:'';position:absolute;top:-55px;right:-55px;width:150px;height:150px;background:radial-gradient(circle,rgba(1,174,241,.18) 0%,transparent 70%);transition:.5s;}
+.svc-c:hover .svc-in::before{width:200px;height:200px;top:-35px;right:-35px;}
+.svc-ic{width:58px;height:58px;background:rgba(1,174,241,.13);border:1px solid rgba(1,174,241,.28);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:18px;transition:.3s;}
+.svc-c:hover .svc-ic{background:var(--sky);border-color:var(--sky);transform:scale(1.1);}
+.svc-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:7px;display:block;}
+.svc-h{font-size:17px;font-weight:800;color:#fff;margin-bottom:9px;line-height:1.2;}
+.svc-p{font-size:12px;color:rgba(255,255,255,.5);line-height:1.65;}
+.svc-arr{position:absolute;bottom:26px;right:26px;width:34px;height:34px;border:1.5px solid rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;transition:.3s;}
+.svc-c:hover .svc-arr{background:var(--yellow);border-color:var(--yellow);color:var(--navy);transform:rotate(45deg);}
+.svc-c.feat .svc-in{background:linear-gradient(135deg,var(--sky),var(--navy));}
+.svc-c.prem .svc-in{background:linear-gradient(135deg,#1a1a6e,#080982);}
+.svc-c.prem .svc-tag{color:var(--yellow);}
+
+/* ══════════════════════════════
+   GRILLE TARIFAIRE
+══════════════════════════════ */
+#tarifs{background:var(--soft);}
+.tarifs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.tarif-c{background:#fff;border-radius:20px;padding:28px 22px;text-align:center;border:1px solid rgba(1,174,241,.15);transition:.35s;position:relative;overflow:hidden;}
+.tarif-c::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--navy));}
+.tarif-c:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(8,9,130,.12);}
+.tarif-ic{font-size:32px;margin-bottom:12px;display:block;}
+.tarif-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.tarif-desc{font-size:11px;color:#7a8a9a;line-height:1.5;margin-bottom:16px;}
+.tarif-price{font-size:26px;font-weight:900;color:var(--navy);}
+.tarif-price small{font-size:11px;font-weight:500;color:#9aabb8;}
+.tarif-badge{position:absolute;top:14px;right:14px;background:var(--yellow);color:var(--navy);font-size:8px;font-weight:900;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
+
+/* ══════════════════════════════
+   COMMANDE (FORM ONLY)
+══════════════════════════════ */
+#order{background:var(--navy);position:relative;overflow:hidden;}
+#order::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 40%,rgba(1,174,241,.12) 0%,transparent 55%),radial-gradient(ellipse at 5% 80%,rgba(255,232,23,.07) 0%,transparent 45%);}
+.order-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start;position:relative;z-index:1;}
+.order-perks{margin-top:32px;display:flex;flex-direction:column;gap:14px;}
+.perk{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px;}
+.perk-ic{font-size:20px;}
+.perk-txt{font-size:13px;font-weight:600;color:rgba(255,255,255,.8);}
+.form-box{background:rgba(255,255,255,.04);border:1px solid rgba(1,174,241,.2);border-radius:24px;padding:36px;backdrop-filter:blur(10px);}
+.form-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:22px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);margin-bottom:7px;}
+.req{color:var(--yellow);}
+.fc{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:13px 15px;color:#fff;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;transition:.25s;outline:none;}
+.fc:focus{border-color:var(--sky);background:rgba(1,174,241,.08);}
+.fc option{background:var(--navy);}
+.fc::placeholder{color:rgba(255,255,255,.22);}
+.svc-checks{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.sc{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.07);border-radius:9px;padding:9px 13px;cursor:pointer;transition:.2s;}
+.sc:hover,.sc.on{border-color:var(--sky);background:rgba(1,174,241,.1);}
+.sc input{display:none;}
+.sc-em{font-size:15px;}
+.sc-lb{font-size:11px;font-weight:700;color:rgba(255,255,255,.65);}
+.fsub{width:100%;background:var(--yellow);color:var(--navy);padding:17px;border-radius:13px;font-weight:900;font-size:14px;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;letter-spacing:.4px;transition:.3s;margin-top:6px;}
+.fsub:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,232,23,.4);}
+.form-success{display:none;text-align:center;padding:40px 20px;}
+.form-success .fs-icon{font-size:52px;margin-bottom:14px;display:block;}
+.form-success h3{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;}
+.form-success p{font-size:13px;color:rgba(255,255,255,.55);line-height:1.7;}
+
+/* ══════════════════════════════
+   STATS
+══════════════════════════════ */
+#stats{background:var(--navy);padding:80px 0;}
+.stats-g{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.stat-c{background:rgba(255,255,255,.05);border:1px solid rgba(1,174,241,.15);border-radius:20px;padding:28px 24px;transition:.3s;}
+.stat-c:hover{background:rgba(255,255,255,.08);transform:translateY(-4px);}
+.stat-n{font-size:clamp(32px,4vw,46px);font-weight:900;color:var(--yellow);display:block;line-height:1;margin-bottom:6px;}
+.stat-title{font-size:14px;font-weight:800;color:#fff;margin-bottom:6px;}
+.stat-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;}
+
+/* ══════════════════════════════
+   PROCESS SIMULATION
+══════════════════════════════ */
+#process{background:var(--bg);}
+.proc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.proc-visual{background:var(--navy);border-radius:26px;padding:32px;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(8,9,130,.2);}
+.proc-visual::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(1,174,241,.2) 0%,transparent 70%);}
+.pv-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.pv-id{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:2px;}
+.pv-live{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:#4eff91;text-transform:uppercase;letter-spacing:1px;}
+.pv-dot{width:7px;height:7px;background:#4eff91;border-radius:50%;animation:pulse 1.5s infinite;}
+.pv-notice{background:rgba(255,232,23,.1);border:1px solid rgba(255,232,23,.25);border-radius:10px;padding:10px 14px;margin-bottom:20px;font-size:11px;color:rgba(255,232,23,.9);font-weight:600;line-height:1.5;}
+.pv-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;}
+.pv-date{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:24px;}
+.timeline{position:relative;padding-left:20px;}
+.tl-line{position:absolute;left:19px;top:0;bottom:0;width:2px;background:rgba(255,255,255,.08);}
+.tl-fill{position:absolute;left:19px;top:0;width:2px;height:0%;background:linear-gradient(180deg,var(--sky),var(--yellow));transition:height 1s ease;}
+.tl-steps{position:relative;z-index:1;}
+.tl-step{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.tl-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;position:relative;z-index:2;transition:.5s;}
+.tl-dot.wait{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);}
+.tl-dot.done{background:var(--sky);}
+.tl-dot.actv{background:var(--yellow);animation:pulse 2s infinite;}
+.tl-step-n{font-size:13px;font-weight:700;color:#fff;transition:.3s;}
+.tl-step.wait .tl-step-n{color:rgba(255,255,255,.3);}
+.tl-step-t{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px;}
+.sim-ctrl{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.sim-btn{background:var(--yellow);color:var(--navy);border:none;border-radius:10px;padding:10px 18px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:.3s;letter-spacing:.4px;}
+.sim-btn:hover{transform:scale(1.04);box-shadow:0 6px 20px rgba(255,232,23,.35);}
+.sim-btn.reset{background:rgba(255,255,255,.07);color:rgba(255,255,255,.6);}
+.sim-btn.reset:hover{background:rgba(255,255,255,.12);box-shadow:none;}
+.sim-status{font-size:11px;color:rgba(255,255,255,.4);font-weight:600;}
+.proc-feats{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
+.pf{display:flex;align-items:center;gap:14px;padding:15px 18px;background:#fff;border-radius:14px;border-left:3px solid var(--sky);box-shadow:0 2px 12px rgba(8,9,130,.07);transition:.3s;}
+.pf:hover{transform:translateX(6px);box-shadow:0 6px 24px rgba(8,9,130,.12);}
+.pf em{font-size:22px;font-style:normal;}
+.pf span{font-size:13px;font-weight:700;color:var(--navy);}
+
+/* ══════════════════════════════
+   TESTIMONIALS + REVIEW FORM
+══════════════════════════════ */
+#testi{background:#fff;}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:60px;}
+.tc{background:var(--soft);border-radius:22px;padding:28px;transition:.3s;border:1px solid rgba(1,174,241,.1);}
+.tc:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(8,9,130,.1);}
+.tc-q{font-size:40px;color:var(--sky);line-height:.8;font-weight:900;margin-bottom:12px;display:block;}
+.tc-stars{color:var(--yellow);font-size:14px;margin-bottom:8px;}
+.tc-txt{font-size:13px;color:#5a6a80;line-height:1.7;margin-bottom:20px;font-style:italic;}
+.tc-auth{display:flex;align-items:center;gap:11px;}
+.tc-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.tc-name{font-size:13px;font-weight:800;color:var(--navy);}
+.tc-role{font-size:10px;color:#9aabb8;margin-top:2px;}
+
+/* review form */
+.review-box{background:var(--navy);border-radius:24px;padding:40px;position:relative;overflow:hidden;}
+.review-box::before{content:'';position:absolute;top:-80px;right:-80px;width:250px;height:250px;background:radial-gradient(circle,rgba(1,174,241,.15) 0%,transparent 70%);}
+.review-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;}
+.review-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:28px;}
+.stars-input{display:flex;gap:8px;margin-bottom:20px;}
+.star-btn{font-size:28px;cursor:pointer;color:rgba(255,255,255,.2);transition:.2s;background:none;border:none;padding:0;}
+.star-btn.active{color:var(--yellow);}
+.star-btn:hover{transform:scale(1.2);}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+
+/* ══════════════════════════════
+   SLIDESHOW DIAPO
+══════════════════════════════ */
+#slideshow{background:var(--navy);overflow:hidden;padding:80px 0;}
+.slide-hdr{text-align:center;margin-bottom:48px;}
+.slide-wrapper{position:relative;}
+.slides{display:flex;gap:24px;transition:transform .6s cubic-bezier(.16,1,.3,1);}
+.slide{flex-shrink:0;width:calc(33.33% - 16px);background:rgba(255,255,255,.06);border:1px solid rgba(1,174,241,.2);border-radius:22px;overflow:hidden;position:relative;}
+.slide-img{width:100%;height:220px;background:linear-gradient(135deg,var(--sky),var(--navy));display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;}
+.slide-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.slide-info{padding:22px;}
+.slide-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:6px;display:block;}
+.slide-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;}
+.slide-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;}
+.slide-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;}
+.slide-nav-btn{width:42px;height:42px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:50%;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.3s;}
+.slide-nav-btn:hover{background:var(--yellow);color:var(--navy);border-color:var(--yellow);}
+.slide-dots{display:flex;gap:8px;}
+.sdot2{width:8px;height:8px;background:rgba(255,255,255,.2);border-radius:50%;cursor:pointer;transition:.3s;}
+.sdot2.on{background:var(--yellow);width:24px;border-radius:4px;}
+
+/* ══════════════════════════════
+   FAQ
+══════════════════════════════ */
+#faq{background:var(--soft);}
+.faq-w{max-width:740px;margin:0 auto;}
+.faq-i{background:#fff;border-radius:14px;margin-bottom:10px;overflow:hidden;border:1px solid rgba(8,9,130,.08);transition:.3s;}
+.faq-i:hover{border-color:rgba(1,174,241,.3);}
+.faq-q{padding:20px 26px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy);gap:14px;}
+.faq-ic{width:28px;height:28px;background:var(--soft);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:17px;flex-shrink:0;transition:.3s;font-weight:300;}
+.faq-i.op .faq-ic{background:var(--navy);color:var(--yellow);transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 26px;}
+.faq-i.op .faq-a{max-height:200px;padding:0 26px 20px;}
+.faq-a p{font-size:13px;color:#6a7a90;line-height:1.75;}
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+footer{background:var(--navy2);padding:56px 0 26px;position:relative;overflow:hidden;}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--yellow),var(--sky));}
+.f-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
+.f-brand-name{font-size:24px;font-weight:900;color:#fff;margin-bottom:10px;}
+.f-brand-name span{color:var(--yellow);}
+.f-tag{font-size:14px;font-style:italic;color:rgba(255,255,255,.5);margin-bottom:22px;line-height:1.5;font-weight:500;}
+.f-socials{display:flex;gap:10px;}
+.fsoc{width:38px;height:38px;background:rgba(255,255,255,.07);border-radius:10px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);text-decoration:none;transition:.3s;}
+.fsoc:hover{background:var(--sky);color:#fff;}
+.fsoc svg{width:18px;height:18px;fill:currentColor;}
+.f-col-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:18px;}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.f-links a{color:rgba(255,255,255,.55);text-decoration:none;font-size:12px;font-weight:500;transition:.25s;}
+.f-links a:hover{color:var(--sky);}
+.f-ci{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:9px;}
+.f-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;align-items:center;justify-content:space-between;}
+.f-copy{font-size:11px;color:rgba(255,255,255,.2);}
+
+/* WA */
+.wa{position:fixed;bottom:26px;right:26px;z-index:9998;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px rgba(37,211,102,.42);text-decoration:none;animation:floatY 3s ease-in-out infinite;transition:.3s;}
+.wa:hover{transform:scale(1.12);box-shadow:0 12px 36px rgba(37,211,102,.6);}
+.wa svg{width:26px;height:26px;fill:#fff;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  .hero-grid,.order-wrap,.proc-wrap{grid-template-columns:1fr;gap:40px;}
+  .phone-wrap{display:none;}
+  .svc-grid,.steps,.tg{grid-template-columns:1fr 1fr;}
+  .tarifs-grid{grid-template-columns:1fr 1fr;}
+  .stats-g{grid-template-columns:1fr 1fr;}
+  .f-grid{grid-template-columns:1fr 1fr;}
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .nav-ham{display:flex;}
+  .ctnr{padding:0 22px;}
+  section{padding:68px 0;}
+  .lang-bar{right:70px;}
+  .slide{width:calc(50% - 12px);}
+}
+@media(max-width:600px){
+  .svc-grid,.tg,.tarifs-grid,.frow,.svc-checks,.review-grid{grid-template-columns:1fr;}
+  .f-grid{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;}
+  .hero-nums{gap:18px;}
+  .stats-g{grid-template-columns:1fr;}
+  .slide{width:calc(100% - 0px);}
+}
+
+/* ══════════════════════════════
+   ESPACE CLIENT SECTION
+══════════════════════════════ */
+#espace{background:var(--navy);position:relative;overflow:hidden;}
+#espace::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(1,174,241,.15) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(255,232,23,.08) 0%,transparent 45%);}
+.espace-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative;z-index:1;}
+.espace-cards{display:flex;flex-direction:column;gap:16px;}
+.espace-card{background:rgba(255,255,255,.05);border:1px solid rgba(1,174,241,.15);border-radius:18px;padding:22px 24px;display:flex;align-items:center;gap:18px;transition:.35s;cursor:pointer;text-decoration:none;}
+.espace-card:hover{background:rgba(255,255,255,.09);transform:translateX(8px);border-color:rgba(1,174,241,.35);}
+.ec-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.ec-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.ec-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5;}
+.ec-arrow{margin-left:auto;font-size:18px;color:rgba(255,255,255,.25);transition:.3s;}
+.espace-card:hover .ec-arrow{color:var(--yellow);transform:translateX(4px);}
+.espace-cta-wrap{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;}
+.btn-espace{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;transition:.3s;letter-spacing:.3px;}
+.btn-espace.primary{background:var(--yellow);color:var(--navy);box-shadow:0 8px 28px rgba(255,232,23,.25);}
+.btn-espace.primary:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(255,232,23,.4);}
+.btn-espace.secondary{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.15);}
+.btn-espace.secondary:hover{background:rgba(255,255,255,.12);}
+/* logged in state */
+.espace-logged{background:rgba(78,255,145,.06);border:1px solid rgba(78,255,145,.2);border-radius:20px;padding:24px;margin-top:28px;display:none;}
+.el-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.el-av{width:46px;height:46px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:18px;}
+.el-name{font-size:16px;font-weight:800;color:#fff;}
+.el-status{font-size:11px;color:#4eff91;font-weight:600;margin-top:2px;}
+.el-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.el-btn{padding:10px 20px;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.25s;}
+.el-btn.dashboard{background:var(--yellow);color:var(--navy);}
+.el-btn.dashboard:hover{box-shadow:0 6px 20px rgba(255,232,23,.35);}
+.el-btn.logout{background:rgba(255,80,80,.12);color:#ff8080;border:1px solid rgba(255,80,80,.2);}
+.el-btn.logout:hover{background:rgba(255,80,80,.2);}
+@media(max-width:900px){.espace-grid{grid-template-columns:1fr;gap:40px;}}
+</style>
+</head>
+<body>
+
+<!-- LANG -->
+<div class="lang-bar">
+  <button class="lb on" onclick="setL('fr')">FR</button>
+  <button class="lb" onclick="setL('en')">EN</button>
+  <button class="lb" onclick="setL('es')">ES</button>
+</div>
+
+<!-- WA -->
+<a href="https://wa.me/212621464851" class="wa" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <img src="logo.png" alt="MyFRESH Logo" style="width:44px;height:44px;object-fit:contain;border-radius:10px;" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'">
+    <div id="logo-fallback" style="display:none;width:44px;height:44px;border:2px dashed rgba(1,174,241,.5);border-radius:12px;align-items:center;justify-content:center;color:rgba(1,174,241,.6);font-size:9px;font-weight:700;text-align:center;line-height:1.3;">LOGO<br>ICI</div>
+    <span class="logo-txt">My<span>FRESH</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how" data-i="nav.how">Comment Ça Marche</a></li>
+    <li><a href="#services" data-i="nav.svc">Services</a></li>
+    <li><a href="#tarifs" data-i="nav.tarif">Tarifs</a></li>
+    <li><a href="#process" data-i="nav.proc">Suivi</a></li>
+    <li id="nav-account-li">
+      <!-- Filled dynamically by JS -->
+      <a href="login.html" class="nav-account" id="nav-account-btn">
+        <span class="nav-av-dot"></span>
+        <span data-i="nav.account">Mon Compte</span>
+      </a>
+    </li>
+    <li><a href="#order" class="nav-cta" data-i="nav.book">Réserver</a></li>
+  </ul>
+  <div class="nav-ham" onclick="toggleMob()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mob-menu" id="mob-menu">
+  <a href="#how" onclick="toggleMob()" data-i="nav.how">Comment Ça Marche</a>
+  <a href="#services" onclick="toggleMob()" data-i="nav.svc">Services</a>
+  <a href="#tarifs" onclick="toggleMob()" data-i="nav.tarif">Tarifs</a>
+  <a href="#process" onclick="toggleMob()" data-i="nav.proc">Suivi</a>
+  <a href="#espace" onclick="toggleMob()" data-i="nav.account">Mon Compte</a>
+  <a href="#order" onclick="toggleMob()" data-i="nav.book">Réserver</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-orb ho1"></div><div class="hero-orb ho2"></div><div class="hero-orb ho3"></div>
+  <div class="bbl" style="width:30px;height:30px;left:8%;animation-duration:9s;"></div>
+  <div class="bbl" style="width:18px;height:18px;left:23%;animation-duration:12s;animation-delay:2s"></div>
+  <div class="bbl" style="width:46px;height:46px;left:45%;animation-duration:10s;animation-delay:1s"></div>
+  <div class="bbl" style="width:14px;height:14px;left:70%;animation-duration:8s;animation-delay:3s"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-badge"><span class="bdot"></span><span data-i="hero.badge">Tanger, Maroc — Service Premium</span></div>
+      <h1 class="hero-h1" data-i="hero.h1">Votre Plateforme De Lessive Et D'entretien Ménager</h1>
+      <p class="hero-sub" data-i="hero.sub">Ton Linge Propre Avec Zéro Effort.</p>
+      <div class="hero-btns">
+        <a href="#order" class="btn-y" data-i="hero.c1">✦ Commander Maintenant</a>
+        <a href="#services" class="btn-g" data-i="hero.c2">Découvrir Nos Services →</a>
+      </div>
+      <div class="hero-nums">
+        <div><span class="hn-n" data-cnt="1000">0</span><span class="hn-l" data-i="st.cl">Clients</span></div>
+        <div><span class="hn-n">100%</span><span class="hn-l" data-i="st.flex">Flexibilité</span></div>
+        <div><span class="hn-n" data-cnt="24">0</span><span class="hn-l" data-i="st.h">H/7 Disponible</span></div>
+        <div><span class="hn-n" data-cnt="100">0</span><span class="hn-l" data-i="st.rt">% Satisfaction</span></div>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="pscreen">
+          <div class="ph-hdr"><span class="ph-logo">My<span>FRESH</span></span></div>
+          <div class="ph-card"><div class="ph-tiny">Commande En Cours</div><div class="ph-name">Lot Vêtements × 8 Pcs</div><div class="ph-status"><span class="sdot"></span> En Lavage...</div></div>
+          <div class="ph-track">
+            <div class="ph-track-t">Suivi En Temps Réel</div>
+            <div class="ph-step dn"><div class="ph-sd">✓</div> Récupéré</div>
+            <div class="ph-step ac"><div class="ph-sd">⟳</div> En Lavage</div>
+            <div class="ph-step"><div class="ph-sd"></div> Repassage</div>
+            <div class="ph-step"><div class="ph-sd"></div> Livraison</div>
+          </div>
+          <div class="ph-mini">
+            <div class="ph-mc"><span class="em2">👕</span><span class="lb2">Vêtements</span></div>
+            <div class="ph-mc"><span class="em2">👟</span><span class="lb2">Chaussures</span></div>
+            <div class="ph-mc"><span class="em2">🛏️</span><span class="lb2">Literie</span></div>
+            <div class="ph-mc"><span class="em2">🪟</span><span class="lb2">Rideaux</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fbadge fb1">✦ 24H/7</div>
+      <div class="fbadge fb2">Livraison À La Porte</div>
+    </div>
+  </div>
+  <div class="hero-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f4fafd"/></svg></div>
+</section>
+
+<!-- PARTNERS TICKER -->
+<div class="partners-bar">
+  <div class="partners-label" data-i="part.lbl">Nos Partenaires</div>
+  <div class="ticker-wrap">
+    <div class="ticker" id="ticker">
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">Hub ES.Maroc</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">AMCI</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">Enabel</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">Linkup Africa</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">La Maison Des Startups</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">Hub ES.Maroc</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">AMCI</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">Enabel</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">Linkup Africa</span></div>
+      <div class="partner-item"><span class="partner-dot"></span><span class="partner-name">La Maison Des Startups</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-stripe"></div>
+<section id="how">
+  <div class="ctnr">
+    <div class="sec-hdr rv"><span class="sec-label" data-i="how.lbl">Le Processus</span><h2 class="sec-title" data-i="how.title">Comment Ça Marche</h2><p class="sec-sub" data-i="how.sub">En 3 Étapes Simples, Votre Linge Est Récupéré, Lavé Et Livré Directement À Votre Porte.</p></div>
+    <div class="steps">
+      <div class="step-c rv" style="transition-delay:.1s"><div class="sn">1</div><div class="si">📱</div><h3 data-i="s1.t">Commandez En Ligne</h3><p data-i="s1.d">Choisissez Vos Services, Sélectionnez Une Date Et Indiquez Votre Adresse. Rapide Et Simple.</p></div>
+      <div class="step-c rv" style="transition-delay:.2s"><div class="sn">2</div><div class="si">🚿</div><h3 data-i="s2.t">On S'occupe De Tout</h3><p data-i="s2.d">Ramassage À Domicile, Lavage Et Repassage Selon Vos Préférences — Avec Soin Et Professionnalisme.</p></div>
+      <div class="step-c rv" style="transition-delay:.3s"><div class="sn">3</div><div class="si">🏠</div><h3 data-i="s3.t">Livré À Votre Porte</h3><p data-i="s3.d">Votre Linge Propre Et Plié Vous Est Livré. Suivez Chaque Étape En Temps Réel Depuis Votre Compte.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="ctnr">
+    <div class="sec-hdr rv"><span class="sec-label" data-i="svc.lbl">Nos Services</span><h2 class="sec-title" data-i="svc.title">Tout Ce Dont Vous Avez Besoin</h2><p class="sec-sub" data-i="svc.sub">Du T-shirt À La Couette XXL, Un Service De Qualité À Un Prix Compétitif</p></div>
+    <div class="svc-grid">
+      <div class="svc-c feat rv" style="transition-delay:.1s"><div class="svc-in"><div class="svc-ic">👕</div><span class="svc-tag" data-i="v.pop">Le Plus Populaire</span><div class="svc-h" data-i="v1.t">Lavage & Repassage Par Pièce</div><p class="svc-p" data-i="v1.d">Chaque Vêtement Traité Individuellement Avec Soin. Parfait Pour Vos Tenues Professionnelles Et Spéciales.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c rv" style="transition-delay:.15s"><div class="svc-in"><div class="svc-ic">🧺</div><span class="svc-tag" data-i="v.eco">Économique</span><div class="svc-h" data-i="v2.t">Lavage Par Lot (Sans Repassage)</div><p class="svc-p" data-i="v2.d">Lavage En Lot Pour Votre Quotidien. Idéal Pour Les Étudiants Avec Un Volume Important De Linge.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c rv" style="transition-delay:.2s"><div class="svc-in"><div class="svc-ic">🏠</div><span class="svc-tag" data-i="v.hm">À Domicile</span><div class="svc-h" data-i="v3.t">Repassage À Domicile Sur RDV</div><p class="svc-p" data-i="v3.d">Notre Agent Se Déplace Chez Vous Selon Votre Disponibilité Pour Repasser Vos Vêtements Sur Place.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c rv" style="transition-delay:.25s"><div class="svc-in"><div class="svc-ic">👟</div><span class="svc-tag" data-i="v.sp">Spécialité Maison</span><div class="svc-h" data-i="v4.t">Nettoyage Chaussures</div><p class="svc-p" data-i="v4.d">Sneakers, Chaussures De Ville Et Bottes Remises À Neuf. Un Traitement Professionnel Et Soigné.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c rv" style="transition-delay:.3s"><div class="svc-in"><div class="svc-ic">🛏️</div><span class="svc-tag" data-i="v.mai">Maison & Confort</span><div class="svc-h" data-i="v5.t">Literie & Couette</div><p class="svc-p" data-i="v5.d">Lavage En Profondeur De Votre Literie, Couettes Et Draps. Hygiène Et Fraîcheur Garanties.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c prem rv" style="transition-delay:.35s"><div class="svc-in"><div class="svc-ic">🌟</div><span class="svc-tag" data-i="v.ex">Exclusif — Abonnement Premium</span><div class="svc-h" data-i="v6.t">Rideaux, Coussins & Nounours</div><p class="svc-p" data-i="v6.d">Abonnez-vous et accédez à tous nos services à tarif préférentiel. Priorité de prise en charge, suivi renforcé et flexibilité totale sur l'ensemble de la gamme.</p><div class="svc-arr">→</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GRILLE TARIFAIRE -->
+<section id="tarifs">
+  <div class="ctnr">
+    <div class="sec-hdr rv" style="text-align:center"><span class="sec-label" data-i="tar.lbl">Grille Tarifaire</span><h2 class="sec-title" data-i="tar.title">Des Prix Transparents Et Compétitifs</h2><p class="sec-sub" style="margin:0 auto" data-i="tar.sub">Chaque Service À Son Prix Juste. Aucune Surprise À La Livraison.</p></div>
+    <div class="tarifs-grid">
+      <div class="tarif-c rv" style="transition-delay:.05s"><span class="tarif-ic">👕</span><div class="tarif-name" data-i="t1.n">Chemise / T-shirt</div><div class="tarif-desc" data-i="t1.d">Lavage + Repassage Individuel</div><div class="tarif-price">10 MAD <small data-i="t.pp">/ Pièce</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.1s"><div class="tarif-badge" data-i="t.pop">Populaire</div><span class="tarif-ic">🧺</span><div class="tarif-name" data-i="t2.n">Lot Standard</div><div class="tarif-desc" data-i="t2.d">Lavage En Lot (Sans Repassage)</div><div class="tarif-price">35 MAD <small data-i="t.pl">/ Lot</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.15s"><span class="tarif-ic">👖</span><div class="tarif-name" data-i="t3.n">Pantalon / Jeans</div><div class="tarif-desc" data-i="t3.d">Lavage + Repassage Individuel</div><div class="tarif-price">12 MAD <small data-i="t.pp">/ Pièce</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.2s"><span class="tarif-ic">👟</span><div class="tarif-name" data-i="t4.n">Chaussures</div><div class="tarif-desc" data-i="t4.d">Nettoyage Professionnel Complet</div><div class="tarif-price">25 MAD <small data-i="t.par">/ Paire</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.25s"><span class="tarif-ic">🛏️</span><div class="tarif-name" data-i="t5.n">Literie & Couette</div><div class="tarif-desc" data-i="t5.d">Lavage En Profondeur</div><div class="tarif-price">60 MAD <small data-i="t.pa">/ Article</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.3s"><span class="tarif-ic">🏠</span><div class="tarif-name" data-i="t6.n">Repassage Domicile</div><div class="tarif-desc" data-i="t6.d">Déplacement À Domicile Sur RDV</div><div class="tarif-price">50 MAD <small data-i="t.ps">/ Session</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.35s"><span class="tarif-ic">🪟</span><div class="tarif-name" data-i="t7.n">Rideaux</div><div class="tarif-desc" data-i="t7.d">Lavage Et Entretien Spécialisé</div><div class="tarif-price">À Partir De 30 MAD <small data-i="t.pa">/ Article</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.4s"><div class="tarif-badge" data-i="t.best">Meilleur Deal</div><span class="tarif-ic">⭐</span><div class="tarif-name" data-i="t8.n">Abonnement Mensuel</div><div class="tarif-desc" data-i="t8.d">Accès Prioritaire + Tarif Réduit</div><div class="tarif-price">Sur Devis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section id="order">
+  <div class="ctnr">
+    <div class="order-wrap">
+      <div class="rv">
+        <span class="sec-label" data-i="ord.lbl">Réservation</span>
+        <h2 class="sec-title white" data-i="ord.title">Prêt À Commander ?</h2>
+        <p class="sec-sub w" data-i="ord.sub">Remplissez Le Formulaire, Nous Vous Contactons Sous 30 Minutes Pour Confirmer Le Ramassage.</p>
+        <div class="order-perks">
+          <div class="perk"><span class="perk-ic">🚀</span><span class="perk-txt" data-i="pk1">Ramassage Le Jour Même (Sous 2H)</span></div>
+          <div class="perk"><span class="perk-ic">💬</span><span class="perk-txt" data-i="pk2">Confirmation Par WhatsApp Garantie</span></div>
+          <div class="perk"><span class="perk-ic">💰</span><span class="perk-txt" data-i="pk3">Paiement À La Livraison — Zéro Avance</span></div>
+          <div class="perk"><span class="perk-ic">🔒</span><span class="perk-txt" data-i="pk4">Vos Articles Assurés Pendant Tout Le Traitement</span></div>
+        </div>
+      </div>
+      <div class="rv" style="transition-delay:.2s">
+        <div class="form-box">
+          <div class="form-title" data-i="form.title">📋 Votre Commande</div>
+          <form id="mf" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="4464b3bd-4344-4161-b5a6-185e9687aa49">
+            <input type="hidden" name="subject" value="🧺 Nouvelle Commande MyFRESH">
+            <input type="hidden" name="from_name" value="Site MyFRESH">
+            <input type="hidden" id="rth" name="replyto" value="">
+            <div class="frow">
+              <div class="fg"><label data-i="f.nm">Prénom & Nom <span class="req">*</span></label><input type="text" name="Nom complet" class="fc" placeholder="Ahmed Benali" required></div>
+              <div class="fg"><label data-i="f.ph">Téléphone <span class="req">*</span></label><input type="tel" name="Téléphone" class="fc" placeholder="+212 6XX XXX XXX" required></div>
+            </div>
+            <div class="fg"><label data-i="f.em">Email <span style="color:rgba(255,255,255,.3);font-size:9px;" data-i="f.opt">(Optionnel)</span></label><input type="email" name="Email" class="fc" placeholder="exemple@email.com" id="fem" oninput="document.getElementById('rth').value=this.value"></div>
+            <div class="fg"><label data-i="f.ad">Adresse De Ramassage <span class="req">*</span></label><input type="text" name="Adresse" class="fc" placeholder="Quartier, Rue, N° — Tanger" required></div>
+            <div class="frow">
+              <div class="fg"><label data-i="f.dt">Date Souhaitée <span class="req">*</span></label><input type="date" name="Date souhaitée" class="fc" required></div>
+              <div class="fg"><label data-i="f.sl">Créneau Horaire</label>
+                <select name="Créneau" class="fc">
+                  <option>00:00 – 03:00</option>
+                  <option>03:00 – 06:00</option>
+                  <option>06:00 – 09:00</option>
+                  <option selected>09:00 – 12:00</option>
+                  <option>12:00 – 15:00</option>
+                  <option>15:00 – 18:00</option>
+                  <option>18:00 – 21:00</option>
+                  <option>21:00 – 00:00</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg"><label data-i="f.sv">Services Souhaités</label>
+              <div class="svc-checks">
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Lavage & Repassage"><span class="sc-em">👕</span><span class="sc-lb" data-i="sc1">Lavage & Repassage</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Lot sans repassage"><span class="sc-em">🧺</span><span class="sc-lb" data-i="sc2">Lot Sans Repassage</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Repassage domicile"><span class="sc-em">🏠</span><span class="sc-lb" data-i="sc3">Repassage Domicile</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Chaussures"><span class="sc-em">👟</span><span class="sc-lb" data-i="sc4">Chaussures</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Literie & Couette"><span class="sc-em">🛏️</span><span class="sc-lb" data-i="sc5">Literie & Couette</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Rideaux & Coussins"><span class="sc-em">🪟</span><span class="sc-lb" data-i="sc6">Rideaux & Coussins</span></div>
+              </div>
+            </div>
+            <div class="fg"><label data-i="f.nt">Instructions Spéciales Pour Votre Commande</label><textarea name="Instructions" class="fc" rows="3" placeholder="Ex: Attention tissu délicat, parfum préféré, code d'accès résidence..."></textarea></div>
+            <button type="submit" class="fsub" data-i="f.sub">✦ Envoyer Ma Commande</button>
+          </form>
+          <div class="form-success" id="fs"><span class="fs-icon">✅</span><h3 data-i="ok.t">Commande Envoyée !</h3><p data-i="ok.d">Nous Vous Contactons Dans Les 30 Minutes Pour Confirmer Le Ramassage. Merci De Faire Confiance À MyFRESH !</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="ctnr">
+    <div class="sec-hdr rv" style="text-align:center"><span class="sec-label" style="color:rgba(1,174,241,.8)" data-i="stats.lbl">Pourquoi MyFRESH</span><h2 class="sec-title white" data-i="stats.title">Ton Linge Propre, Avec Zéro Effort.</h2></div>
+    <div class="stats-g">
+      <div class="stat-c rv" style="transition-delay:.05s"><span class="stat-n" data-cnt2="1000">0</span><div class="stat-title" data-i="st1.t">Plus De 1000 Clients Satisfaits</div><p class="stat-desc" data-i="st1.d">Une Communauté De Confiance À Tanger. Chaque Client Est Unique Et Mérite Le Meilleur Service.</p></div>
+      <div class="stat-c rv" style="transition-delay:.1s"><span class="stat-n">24/7</span><div class="stat-title" data-i="st2.t">Flexibilité & Accessibilité 24H/7</div><p class="stat-desc" data-i="st2.d">Commandez À N'importe Quelle Heure Du Jour Ou De La Nuit. Nous Sommes Toujours Disponibles Pour Vous.</p></div>
+      <div class="stat-c rv" style="transition-delay:.15s"><span class="stat-n">0</span><div class="stat-title" data-i="st3.t">Zéro Effort De Votre Côté</div><p class="stat-desc" data-i="st3.d">Commandez En Ligne, On Récupère, On Traite, On Livre. Vous N'avez Rien D'autre À Faire.</p></div>
+      <div class="stat-c rv" style="transition-delay:.2s"><span class="stat-n" data-cnt2="100">0</span><div class="stat-title" data-i="st4.t">100% Satisfaction Garantie</div><p class="stat-desc" data-i="st4.d">Si Vous N'êtes Pas Satisfait, Nous Retraitons Gratuitement. Votre Satisfaction Est Notre Priorité Absolue.</p></div>
+      <div class="stat-c rv" style="transition-delay:.25s"><span class="stat-n">MAD</span><div class="stat-title" data-i="st5.t">Tarifs Compétitifs</div><p class="stat-desc" data-i="st5.d">Des Prix Transparents Et Accessibles. Grille Tarifaire Claire Sans Frais Cachés Ni Mauvaises Surprises.</p></div>
+      <div class="stat-c rv" style="transition-delay:.3s"><span class="stat-n">🚪</span><div class="stat-title" data-i="st6.t">Rapidité & Livraison À La Porte</div><p class="stat-desc" data-i="st6.d">Ramassage Et Livraison Directement À Votre Adresse. Rapide, Ponctuel Et Soigné À Chaque Fois.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS SIMULATION -->
+<section id="process">
+  <div class="ctnr">
+    <div class="proc-wrap">
+      <div class="proc-visual rv">
+        <div class="pv-header"><span class="pv-id">CMD-2025-0847</span><span class="pv-live"><span class="pv-dot"></span> En Direct</span></div>
+        <div class="pv-notice" data-i="sim.notice">⚠️ Cette Simulation Est Réservée Aux Clients Connectés. Créez Un Compte Et Passez Une Commande Pour Suivre Votre Linge En Temps Réel.</div>
+        <div class="pv-name" data-i="pr.order">Lot Vêtements — 8 Pièces</div>
+        <div class="pv-date" data-i="pr.date">Récupéré Le 03 Avril 2025 À 09:30</div>
+        <div class="timeline">
+          <div class="tl-line"></div>
+          <div class="tl-fill" id="tl-fill"></div>
+          <div class="tl-steps">
+            <div class="tl-step wait"><div class="tl-dot wait">📋</div><div><div class="tl-step-n" data-i="pr.s1">Commande Confirmée</div><div class="tl-step-t" id="ts0">—</div></div></div>
+            <div class="tl-step wait"><div class="tl-dot wait">🚗</div><div><div class="tl-step-n" data-i="pr.s2">Ramassage Effectué</div><div class="tl-step-t" id="ts1">—</div></div></div>
+            <div class="tl-step wait"><div class="tl-dot wait">🫧</div><div><div class="tl-step-n" data-i="pr.s3">Lavage En Cours</div><div class="tl-step-t" id="ts2">—</div></div></div>
+            <div class="tl-step wait"><div class="tl-dot wait">👔</div><div><div class="tl-step-n" data-i="pr.s4">Repassage</div><div class="tl-step-t" id="ts3">—</div></div></div>
+            <div class="tl-step wait"><div class="tl-dot wait">📦</div><div><div class="tl-step-n" data-i="pr.s5">Emballage & Contrôle</div><div class="tl-step-t" id="ts4">—</div></div></div>
+            <div class="tl-step wait"><div class="tl-dot wait">🏠</div><div><div class="tl-step-n" data-i="pr.s6">Livraison À Domicile</div><div class="tl-step-t" id="ts5">—</div></div></div>
+          </div>
+        </div>
+        <div class="sim-ctrl">
+          <button class="sim-btn" onclick="simNext()" id="snb" data-i="sim.start">▶ Voir La Simulation</button>
+          <button class="sim-btn reset" onclick="simReset()" data-i="sim.reset">↺ Réinitialiser</button>
+          <span class="sim-status" id="ss" data-i="sim.hint">Démonstration Du Processus MyFRESH</span>
+        </div>
+      </div>
+      <div class="rv" style="transition-delay:.2s">
+        <span class="sec-label" data-i="pr.lbl">Suivi De Commande</span>
+        <h2 class="sec-title" data-i="pr.title">Ton Linge Propre, Avec Zéro Effort.</h2>
+        <p class="sec-sub" data-i="pr.sub">Chaque Étape De Votre Commande Est Tracée Et Mise À Jour En Temps Réel. Connectez-vous Après Votre Commande Pour Accéder À Votre Suivi Personnel.</p>
+        <div class="proc-feats">
+          <div class="pf rv" style="transition-delay:.3s"><em>📱</em><span data-i="pr.f1">Notifications SMS & WhatsApp À Chaque Étape</span></div>
+          <div class="pf rv" style="transition-delay:.4s"><em>⏱️</em><span data-i="pr.f2">Livraison Estimée 24H À 48H Après Ramassage</span></div>
+          <div class="pf rv" style="transition-delay:.5s"><em>🔒</em><span data-i="pr.f3">Articles Assurés Et Vérifiés Avant Livraison</span></div>
+          <div class="pf rv" style="transition-delay:.6s"><em>✅</em><span data-i="pr.f4">Contrôle Qualité Systématique Avant Emballage</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS + REVIEW -->
+<section id="testi">
+  <div class="ctnr">
+    <div class="sec-hdr rv" style="text-align:center"><span class="sec-label" data-i="te.lbl">Témoignages</span><h2 class="sec-title" data-i="te.title">Ils Nous Font Confiance</h2></div>
+    <div class="tg">
+      <div class="tc rv" style="transition-delay:.1s"><span class="tc-q">"</span><div class="tc-stars">★★★★★</div><p class="tc-txt" data-i="te1.t">Service Révolutionnaire ! Je Commande Le Dimanche Soir Et Tout Me Revient Le Lundi Matin. En Tant Qu'étudiante En Résidence Universitaire, C'est Un Gain De Temps Incroyable.</p><div class="tc-auth"><div class="tc-av">F</div><div><div class="tc-name">Fatima Z.</div><div class="tc-role" data-i="te.s">Étudiante, Cité Universitaire Tanger</div></div></div></div>
+      <div class="tc rv" style="transition-delay:.2s"><span class="tc-q">"</span><div class="tc-stars">★★★★★</div><p class="tc-txt" data-i="te2.t">Le Repassage À Domicile M'a Sauvé Avant Un Entretien Important. Livreur Ponctuel, Vêtements Impeccables. Je Recommande À 100% À Tous Les Professionnels De Tanger.</p><div class="tc-auth"><div class="tc-av">K</div><div><div class="tc-name">Karim B.</div><div class="tc-role" data-i="te.p">Jeune Professionnel, Tanger</div></div></div></div>
+      <div class="tc rv" style="transition-delay:.3s"><span class="tc-q">"</span><div class="tc-stars">★★★★★</div><p class="tc-txt" data-i="te3.t">Rideaux Et Couettes Revenus Absolument Impeccables. Le Service Nettoyage Chaussures Est Exceptionnel. Des Prix Très Raisonnables Pour Une Qualité Premium.</p><div class="tc-auth"><div class="tc-av">S</div><div><div class="tc-name">Sara M.</div><div class="tc-role" data-i="te.h">Résidente, Boukhalef Tanger</div></div></div></div>
+    </div>
+    <!-- REVIEW FORM -->
+    <div class="review-box rv">
+      <div style="position:relative;z-index:1">
+        <div class="review-title" data-i="rev.title">Partagez Votre Expérience</div>
+        <div class="review-sub" data-i="rev.sub">Votre Avis Nous Aide À Améliorer Nos Services Et À Aider D'autres Clients À Choisir MyFRESH</div>
+        <div class="stars-input" id="star-input">
+          <button class="star-btn" onclick="setStar(1)">★</button>
+          <button class="star-btn" onclick="setStar(2)">★</button>
+          <button class="star-btn" onclick="setStar(3)">★</button>
+          <button class="star-btn" onclick="setStar(4)">★</button>
+          <button class="star-btn" onclick="setStar(5)">★</button>
+        </div>
+        <form id="rf" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="4464b3bd-4344-4161-b5a6-185e9687aa49">
+          <input type="hidden" name="subject" value="⭐ Nouvel Avis MyFRESH">
+          <input type="hidden" id="star-val" name="Note" value="5 étoiles">
+          <div class="review-grid">
+            <div class="fg"><label data-i="rev.nm">Votre Nom</label><input type="text" name="Nom" class="fc" placeholder="Votre Prénom" required></div>
+            <div class="fg"><label data-i="rev.role">Votre Profil</label><input type="text" name="Profil" class="fc" placeholder="Ex: Étudiant, Professionnel..."></div>
+          </div>
+          <div class="fg"><label data-i="rev.msg">Votre Avis</label><textarea name="Avis" class="fc" rows="4" placeholder="Partagez Votre Expérience Avec MyFRESH..." required></textarea></div>
+          <button type="submit" class="fsub" style="max-width:280px" data-i="rev.sub2">✦ Publier Mon Avis</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDESHOW -->
+<section id="slideshow">
+  <div class="ctnr">
+    <div class="slide-hdr rv"><span class="sec-label" style="color:rgba(1,174,241,.8)" data-i="sl.lbl">Galerie MyFRESH</span><h2 class="sec-title white" data-i="sl.title">Notre Univers En Images</h2><p class="sec-sub w" style="margin:0 auto;text-align:center" data-i="sl.sub">Découvrez Nos Installations, Notre Équipe Et La Qualité De Nos Services Au Quotidien</p></div>
+    <div class="slide-wrapper rv">
+      <div class="slides" id="slides">
+        <div class="slide"><div class="slide-img"><img src="images/slide1.jpg" alt="Lavage Professionnel" onerror="this.parentElement.innerHTML='👕'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t1">Pressing</span><div class="slide-title" data-i="sl.h1">Lavage Professionnel</div><p class="slide-desc" data-i="sl.d1">Chaque Vêtement Est Traité Avec Des Produits Premium Et Des Machines Dernière Génération.</p></div></div>
+        <div class="slide"><div class="slide-img"><img src="images/slide2.jpg" alt="Ramassage & Livraison" onerror="this.parentElement.innerHTML='🚗'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t2">Logistique</span><div class="slide-title" data-i="sl.h2">Ramassage & Livraison</div><p class="slide-desc" data-i="sl.d2">Notre Équipe De Livreurs Assure La Collecte Et La Livraison Dans Les Délais Promis.</p></div></div>
+        <div class="slide"><div class="slide-img"><img src="images/slide3.jpg" alt="Repassage Soigné" onerror="this.parentElement.innerHTML='👔'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t3">Qualité</span><div class="slide-title" data-i="sl.h3">Repassage Soigné</div><p class="slide-desc" data-i="sl.d3">Un Repassage Impeccable Pour Que Vos Vêtements Soient Toujours Prêts À Porter.</p></div></div>
+        <div class="slide"><div class="slide-img"><img src="images/slide4.jpg" alt="Nettoyage Chaussures" onerror="this.parentElement.innerHTML='👟'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t4">Spécialité</span><div class="slide-title" data-i="sl.h4">Nettoyage Chaussures</div><p class="slide-desc" data-i="sl.d4">Vos Sneakers Et Chaussures Entretenues Comme Neuves Par Nos Spécialistes.</p></div></div>
+        <div class="slide"><div class="slide-img"><img src="images/slide5.jpg" alt="Literie & Couettes" onerror="this.parentElement.innerHTML='🛏️'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t5">Maison</span><div class="slide-title" data-i="sl.h5">Literie & Couettes</div><p class="slide-desc" data-i="sl.d5">Un Lavage En Profondeur Pour Une Literie Fraîche Et Hygiénique Au Quotidien.</p></div></div>
+        <div class="slide"><div class="slide-img"><img src="images/slide6.jpg" alt="Abonnement Mensuel" onerror="this.parentElement.innerHTML='⭐'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t6">Premium</span><div class="slide-title" data-i="sl.h6">Abonnement Mensuel</div><p class="slide-desc" data-i="sl.d6">Rejoignez Notre Programme Premium Et Bénéficiez De Tarifs Préférentiels Et D'un Accès Prioritaire.</p></div></div>
+      </div>
+      <div class="slide-nav">
+        <button class="slide-nav-btn" onclick="slideMove(-1)">←</button>
+        <div class="slide-dots" id="sdots"></div>
+        <button class="slide-nav-btn" onclick="slideMove(1)">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ESPACE CLIENT ══ -->
+<section id="espace">
+  <div class="ctnr">
+    <div class="espace-grid">
+      <div class="rv">
+        <span class="sec-label" data-i="esp.lbl">Espace Personnel</span>
+        <h2 class="sec-title white" data-i="esp.title">Votre Compte MyFRESH</h2>
+        <p class="sec-sub w" data-i="esp.sub">Créez votre compte pour accéder à votre espace personnel. Suivez vos commandes, consultez votre historique et restez informé à chaque étape.</p>
+
+        <!-- NOT LOGGED IN -->
+        <div id="esp-guest" class="espace-cta-wrap">
+          <a href="login.html" class="btn-espace primary" data-i="esp.login">✦ Se Connecter</a>
+          <a href="login.html" class="btn-espace secondary" data-i="esp.register">Créer Un Compte →</a>
+        </div>
+
+        <!-- LOGGED IN -->
+        <div class="espace-logged" id="esp-logged">
+          <div class="el-header">
+            <div class="el-av" id="esp-av">?</div>
+            <div>
+              <div class="el-name" id="esp-name">...</div>
+              <div class="el-status">● Connecté · MyFRESH</div>
+            </div>
+          </div>
+          <div class="el-btns">
+            <a href="#" class="el-btn dashboard" id="esp-dashboard-btn" data-i="esp.dashboard">📊 Mon Dashboard</a>
+            <button class="el-btn logout" onclick="espLogout()" data-i="esp.logout">Se Déconnecter</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="espace-cards rv" style="transition-delay:.15s">
+        <a href="login.html" class="espace-card">
+          <div class="ec-icon">📦</div>
+          <div>
+            <div class="ec-title" data-i="esp.c1t">Suivi En Temps Réel</div>
+            <div class="ec-desc" data-i="esp.c1d">Visualisez l'avancement de votre commande étape par étape, avec notifications automatiques.</div>
+          </div>
+          <span class="ec-arrow">→</span>
+        </a>
+        <a href="login.html" class="espace-card">
+          <div class="ec-icon">🕐</div>
+          <div>
+            <div class="ec-title" data-i="esp.c2t">Historique Complet</div>
+            <div class="ec-desc" data-i="esp.c2d">Accédez à toutes vos commandes passées, consultez les détails et les montants.</div>
+          </div>
+          <span class="ec-arrow">→</span>
+        </a>
+        <a href="login.html" class="espace-card">
+          <div class="ec-icon">💬</div>
+          <div>
+            <div class="ec-title" data-i="esp.c3t">Messages De Notre Équipe</div>
+            <div class="ec-desc" data-i="esp.c3d">Recevez les commentaires et mises à jour personnalisés de notre équipe directement dans votre espace.</div>
+          </div>
+          <span class="ec-arrow">→</span>
+        </a>
+        <a href="login.html" class="espace-card">
+          <div class="ec-icon">⭐</div>
+          <div>
+            <div class="ec-title" data-i="esp.c4t">Accès Abonnement Premium</div>
+            <div class="ec-desc" data-i="esp.c4d">Les abonnés profitent de tarifs préférentiels, priorité et suivi renforcé depuis leur compte.</div>
+          </div>
+          <span class="ec-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+  <div class="ctnr">
+    <div class="sec-hdr rv" style="text-align:center"><span class="sec-label">FAQ</span><h2 class="sec-title" data-i="fq.title">Questions Fréquentes</h2></div>
+    <div class="faq-w">
+      <div class="faq-i rv"><div class="faq-q" onclick="tFaq(this)"><span data-i="q1.q">Quels Sont Vos Délais De Livraison ?</span><span class="faq-ic">+</span></div><div class="faq-a"><p data-i="q1.a">Nous Livrons Généralement Dans Les 24 À 48H Après Le Ramassage. Pour Les Commandes Urgentes, Un Service Express 12H Est Disponible Sur Demande Via WhatsApp.</p></div></div>
+      <div class="faq-i rv"><div class="faq-q" onclick="tFaq(this)"><span data-i="q2.q">Quels Sont Les Modes De Paiement Acceptés ?</span><span class="faq-ic">+</span></div><div class="faq-a"><p data-i="q2.a">Nous Acceptons Le Paiement En Espèces À La Livraison, Le Virement Bancaire Et Le Paiement Mobile. Aucune Avance N'est Requise — Vous Payez Uniquement À La Réception De Votre Linge.</p></div></div>
+      <div class="faq-i rv"><div class="faq-q" onclick="tFaq(this)"><span data-i="q3.q">Livrez-Vous Partout À Tanger ?</span><span class="faq-ic">+</span></div><div class="faq-a"><p data-i="q3.a">Oui, Nous Couvrons L'ensemble De La Ville De Tanger Et Ses Environs Immédiats. Aucun Quartier N'est Exclu. Contactez-Nous Pour Vérifier La Disponibilité Dans Votre Zone.</p></div></div>
+      <div class="faq-i rv"><div class="faq-q" onclick="tFaq(this)"><span data-i="q4.q">Que Se Passe-t-il Si Un Article Est Endommagé ?</span><span class="faq-ic">+</span></div><div class="faq-a"><p data-i="q4.a">Tous Vos Articles Sont Assurés Pendant L'intégralité Du Processus. En Cas De Dommage, Nous Prenons En Charge Le Remplacement Ou Procédons À Un Remboursement Intégral Sans Discussion.</p></div></div>
+      <div class="faq-i rv"><div class="faq-q" onclick="tFaq(this)"><span data-i="q5.q">Puis-Je Annuler Ou Modifier Ma Commande ?</span><span class="faq-ic">+</span></div><div class="faq-a"><p data-i="q5.a">Oui, Vous Pouvez Annuler Ou Modifier Votre Commande Jusqu'à 1H Avant Le Ramassage Prévu Via WhatsApp, Par Téléphone Ou Depuis Votre Espace Client Sur Le Site.</p></div></div>
+      <div class="faq-i rv"><div class="faq-q" onclick="tFaq(this)"><span data-i="q6.q">Comment Fonctionne L'abonnement Mensuel ?</span><span class="faq-ic">+</span></div><div class="faq-a"><p data-i="q6.a">L'abonnement Mensuel Vous Donne Accès À Des Tarifs Préférentiels, Une Priorité De Prise En Charge Et Un Suivi Personnalisé. Contactez-Nous Pour Obtenir Un Devis Adapté À Vos Besoins.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ctnr">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand-name">My<span>FRESH</span></div>
+        <p class="f-tag">"Ton Linge Propre, Avec Zéro Effort."</p>
+        <div class="f-socials">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/212621464851" class="fsoc" target="_blank" title="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <!-- Email -->
+          <a href="/cdn-cgi/l/email-protection#bad7c3dcc8dfc9d2d7d5c8d5d9d9d5faddd7dbd3d694d9d5d7" class="fsoc" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/myfreshmorocco?igsh=MTBqdHM1MXlmc3ltYw==" class="fsoc" target="_blank" title="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/share/17D7g3MQfX/" class="fsoc" target="_blank" title="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/myfresh-morocco-295ba8389" class="fsoc" target="_blank" title="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-t" data-i="ft.svc">Services</div>
+        <ul class="f-links">
+          <li><a href="#services" data-i="v1.t">Lavage & Repassage</a></li>
+          <li><a href="#services" data-i="v2.t">Lavage Par Lot</a></li>
+          <li><a href="#services" data-i="v3.t">Repassage Domicile</a></li>
+          <li><a href="#services" data-i="v4.t">Chaussures</a></li>
+          <li><a href="#services" data-i="v5.t">Literie & Couette</a></li>
+          <li><a href="#services" data-i="v6.t">Abonnement Premium</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-t" data-i="ft.nav">Navigation</div>
+        <ul class="f-links">
+          <li><a href="#how" data-i="nav.how">Comment Ça Marche</a></li>
+          <li><a href="#tarifs" data-i="nav.tarif">Grille Tarifaire</a></li>
+          <li><a href="#process" data-i="nav.proc">Suivi Commande</a></li>
+          <li><a href="#testi" data-i="te.lbl">Témoignages</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#espace" data-i="ft.login">Mon Compte</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-t" data-i="ft.ct">Contact</div>
+        <div class="f-ci">📞 +212 621 464 851</div>
+        <div class="f-ci">📞 +212 782 172 555</div>
+        <div class="f-ci">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1c71657a6e796f7471736e737f7f735c7b717d7570327f7371">[email&#160;protected]</a></div>
+        <div class="f-ci">📍 Tanger, Maroc</div>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span class="f-copy">© 2026 MyFRESH — Tous Droits Réservés</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.2)">Tanger, Maroc</span>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ════ SUPABASE SESSION ════ */
+const { createClient } = supabase;
+const sb = createClient(
+  'https://fwtwusqyrglpnfdttwlt.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3dHd1c3F5cmdscG5mZHR0d2x0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjMwMDQsImV4cCI6MjA5MDgzOTAwNH0.HRy_vF-npCT_3mkgqXuRSx0O8VSdSrtyC4-URLiqcUM'
+);
+
+(async()=>{
+  const { data:{ session } } = await sb.auth.getSession();
+  if(!session){ updateNavGuest(); return; }
+  const { data:profile } = await sb.from('profiles').select('*').eq('id',session.user.id).single();
+  updateNavLogged(profile, session.user);
+  updateEspaceLogged(profile, session.user);
+})();
+
+function updateNavGuest(){
+  const li = document.getElementById('nav-account-li');
+  li.innerHTML = `<a href="login.html" class="nav-account"><span class="nav-av-dot"></span> <span data-i="nav.account">Mon Compte</span></a>`;
+}
+
+function updateNavLogged(profile, user){
+  const name = profile?.nom || user.email;
+  const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  const dashUrl = profile?.role==='admin' ? 'dashboard-admin.html' : 'dashboard-client.html';
+  const li = document.getElementById('nav-account-li');
+  li.innerHTML = `<a href="${dashUrl}" class="nav-account-logged">
+    <div class="nav-av-mini">${initials}</div>
+    <span>${name.split(' ')[0]}</span>
+  </a>`;
+}
+
+function updateEspaceLogged(profile, user){
+  const name = profile?.nom || user.email;
+  const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  const dashUrl = profile?.role==='admin' ? 'dashboard-admin.html' : 'dashboard-client.html';
+  document.getElementById('esp-guest').style.display = 'none';
+  const logged = document.getElementById('esp-logged');
+  logged.style.display = 'block';
+  document.getElementById('esp-av').textContent = initials;
+  document.getElementById('esp-name').textContent = name;
+  document.getElementById('esp-dashboard-btn').href = dashUrl;
+  // update espace cards to point to dashboard
+  document.querySelectorAll('.espace-card').forEach(c=>c.href=dashUrl);
+}
+
+async function espLogout(){
+  await sb.auth.signOut();
+  window.location.reload();
+}
+
+/* ════ TRANSLATIONS ════ */
+const T={
+fr:{
+'nav.how':'Comment Ça Marche','nav.svc':'Services','nav.tarif':'Tarifs','nav.proc':'Suivi','nav.book':'Réserver',
+'hero.badge':'Tanger, Maroc — Service Premium',
+'hero.h1':'Votre Plateforme De Lessive Et D\'entretien Ménager',
+'hero.sub':'Ton Linge Propre Avec Zéro Effort.',
+'hero.c1':'✦ Commander Maintenant','hero.c2':'Découvrir Nos Services →',
+'st.cl':'Clients','st.flex':'Flexibilité','st.h':'H/7 Disponible','st.rt':'% Satisfaction',
+'part.lbl':'Nos Partenaires',
+'how.lbl':'Le Processus','how.title':'Comment Ça Marche',
+'how.sub':'En 3 Étapes Simples, Votre Linge Est Récupéré, Lavé Et Livré Directement À Votre Porte.',
+'s1.t':'Commandez En Ligne','s1.d':'Choisissez Vos Services, Sélectionnez Une Date Et Indiquez Votre Adresse. Rapide Et Simple.',
+'s2.t':'On S\'occupe De Tout','s2.d':'Ramassage À Domicile, Lavage Et Repassage Selon Vos Préférences — Avec Soin Et Professionnalisme.',
+'s3.t':'Livré À Votre Porte','s3.d':'Votre Linge Propre Et Plié Vous Est Livré. Suivez Chaque Étape En Temps Réel Depuis Votre Compte.',
+'svc.lbl':'Nos Services','svc.title':'Tout Ce Dont Vous Avez Besoin',
+'svc.sub':'Du T-shirt À La Couette XXL, Un Service De Qualité À Un Prix Compétitif',
+'v.pop':'Le Plus Populaire','v.eco':'Économique','v.hm':'À Domicile','v.sp':'Spécialité Maison','v.mai':'Maison & Confort','v.ex':'Exclusif — Abonnement Premium',
+'v1.t':'Lavage & Repassage Par Pièce','v1.d':'Chaque Vêtement Traité Individuellement Avec Soin. Parfait Pour Vos Tenues Professionnelles Et Spéciales.',
+'v2.t':'Lavage Par Lot (Sans Repassage)','v2.d':'Lavage En Lot Pour Votre Quotidien. Idéal Pour Les Étudiants Avec Un Volume Important De Linge.',
+'v3.t':'Repassage À Domicile Sur RDV','v3.d':'Notre Agent Se Déplace Chez Vous Selon Votre Disponibilité Pour Repasser Vos Vêtements Sur Place.',
+'v4.t':'Nettoyage Chaussures','v4.d':'Sneakers, Chaussures De Ville Et Bottes Remises À Neuf. Un Traitement Professionnel Et Soigné.',
+'v5.t':'Literie & Couette','v5.d':'Lavage En Profondeur De Votre Literie, Couettes Et Draps. Hygiène Et Fraîcheur Garanties.',
+'v6.t':'Rideaux, Coussins & Nounours','v6.d':'Service Exclusif Pour Vos Articles Hors Vêtements. Abonnement Mensuel Avec Priorité Et Tarif Préférentiel.',
+'tar.lbl':'Grille Tarifaire','tar.title':'Des Prix Transparents Et Compétitifs',
+'tar.sub':'Chaque Service À Son Prix Juste. Aucune Surprise À La Livraison.',
+'t1.n':'Chemise / T-shirt','t1.d':'Lavage + Repassage Individuel',
+'t2.n':'Lot Standard','t2.d':'Lavage En Lot (Sans Repassage)',
+'t3.n':'Pantalon / Jeans','t3.d':'Lavage + Repassage Individuel',
+'t4.n':'Chaussures','t4.d':'Nettoyage Professionnel Complet',
+'t5.n':'Literie & Couette','t5.d':'Lavage En Profondeur',
+'t6.n':'Repassage Domicile','t6.d':'Déplacement À Domicile Sur RDV',
+'t7.n':'Rideaux','t7.d':'Lavage Et Entretien Spécialisé',
+'t8.n':'Abonnement Mensuel','t8.d':'Accès Prioritaire + Tarif Réduit',
+'t.pp':'/ Pièce','t.pl':'/ Lot','t.par':'/ Paire','t.pa':'/ Article','t.ps':'/ Session','t.pop':'Populaire','t.best':'Meilleur Deal',
+'ord.lbl':'Réservation','ord.title':'Prêt À Commander ?',
+'ord.sub':'Remplissez Le Formulaire, Nous Vous Contactons Sous 30 Minutes Pour Confirmer Le Ramassage.',
+'pk1':'Ramassage Le Jour Même (Sous 2H)','pk2':'Confirmation Par WhatsApp Garantie',
+'pk3':'Paiement À La Livraison — Zéro Avance','pk4':'Vos Articles Assurés Pendant Tout Le Traitement',
+'form.title':'📋 Votre Commande',
+'f.nm':'Prénom & Nom','f.ph':'Téléphone','f.em':'Email','f.opt':'(Optionnel)',
+'f.ad':'Adresse De Ramassage','f.dt':'Date Souhaitée','f.sl':'Créneau Horaire',
+'f.sv':'Services Souhaités','f.nt':'Instructions Spéciales Pour Votre Commande','f.sub':'✦ Envoyer Ma Commande',
+'sc1':'Lavage & Repassage','sc2':'Lot Sans Repassage','sc3':'Repassage Domicile','sc4':'Chaussures','sc5':'Literie & Couette','sc6':'Rideaux & Coussins',
+'ok.t':'Commande Envoyée !','ok.d':'Nous Vous Contactons Dans Les 30 Minutes Pour Confirmer Le Ramassage. Merci De Faire Confiance À MyFRESH !',
+'stats.lbl':'Pourquoi MyFRESH','stats.title':'Ton Linge Propre, Avec Zéro Effort.',
+'st1.t':'Plus De 1000 Clients Satisfaits','st1.d':'Une Communauté De Confiance À Tanger. Chaque Client Est Unique Et Mérite Le Meilleur Service.',
+'st2.t':'Flexibilité & Accessibilité 24H/7','st2.d':'Commandez À N\'importe Quelle Heure Du Jour Ou De La Nuit. Nous Sommes Toujours Disponibles Pour Vous.',
+'st3.t':'Zéro Effort De Votre Côté','st3.d':'Commandez En Ligne, On Récupère, On Traite, On Livre. Vous N\'avez Rien D\'autre À Faire.',
+'st4.t':'100% Satisfaction Garantie','st4.d':'Si Vous N\'êtes Pas Satisfait, Nous Retraitons Gratuitement. Votre Satisfaction Est Notre Priorité Absolue.',
+'st5.t':'Tarifs Compétitifs','st5.d':'Des Prix Transparents Et Accessibles. Grille Tarifaire Claire Sans Frais Cachés Ni Mauvaises Surprises.',
+'st6.t':'Rapidité & Livraison À La Porte','st6.d':'Ramassage Et Livraison Directement À Votre Adresse. Rapide, Ponctuel Et Soigné À Chaque Fois.',
+'sim.notice':'⚠️ Cette Simulation Est Réservée Aux Clients Connectés. Créez Un Compte Et Passez Une Commande Pour Suivre Votre Linge En Temps Réel.',
+'sim.start':'▶ Voir La Simulation','sim.reset':'↺ Réinitialiser','sim.hint':'Démonstration Du Processus MyFRESH',
+'pr.lbl':'Suivi De Commande','pr.title':'Ton Linge Propre, Avec Zéro Effort.',
+'pr.sub':'Chaque Étape De Votre Commande Est Tracée Et Mise À Jour En Temps Réel. Connectez-vous Après Votre Commande Pour Accéder À Votre Suivi Personnel.',
+'pr.order':'Lot Vêtements — 8 Pièces','pr.date':'Récupéré Le 03 Avril 2025 À 09:30',
+'pr.s1':'Commande Confirmée','pr.s2':'Ramassage Effectué','pr.s3':'Lavage En Cours','pr.s4':'Repassage','pr.s5':'Emballage & Contrôle','pr.s6':'Livraison À Domicile',
+'pr.f1':'Notifications SMS & WhatsApp À Chaque Étape','pr.f2':'Livraison Estimée 24H À 48H Après Ramassage',
+'pr.f3':'Articles Assurés Et Vérifiés Avant Livraison','pr.f4':'Contrôle Qualité Systématique Avant Emballage',
+'te.lbl':'Témoignages','te.title':'Ils Nous Font Confiance',
+'te1.t':'Service Révolutionnaire ! Je Commande Le Dimanche Soir Et Tout Me Revient Le Lundi Matin. En Tant Qu\'étudiante En Résidence Universitaire, C\'est Un Gain De Temps Incroyable.',
+'te2.t':'Le Repassage À Domicile M\'a Sauvé Avant Un Entretien Important. Livreur Ponctuel, Vêtements Impeccables. Je Recommande À 100% À Tous Les Professionnels De Tanger.',
+'te3.t':'Rideaux Et Couettes Revenus Absolument Impeccables. Le Service Nettoyage Chaussures Est Exceptionnel. Des Prix Très Raisonnables Pour Une Qualité Premium.',
+'te.s':'Étudiante, Cité Universitaire Tanger','te.p':'Jeune Professionnel, Tanger','te.h':'Résidente, Boukhalef Tanger',
+'rev.title':'Partagez Votre Expérience','rev.sub':'Votre Avis Nous Aide À Améliorer Nos Services Et À Aider D\'autres Clients À Choisir MyFRESH',
+'rev.nm':'Votre Nom','rev.role':'Votre Profil','rev.msg':'Votre Avis','rev.sub2':'✦ Publier Mon Avis',
+'sl.lbl':'Galerie MyFRESH','sl.title':'Notre Univers En Images','sl.sub':'Découvrez Nos Installations, Notre Équipe Et La Qualité De Nos Services Au Quotidien',
+'sl.t1':'Pressing','sl.h1':'Lavage Professionnel','sl.d1':'Chaque Vêtement Est Traité Avec Des Produits Premium Et Des Machines Dernière Génération.',
+'sl.t2':'Logistique','sl.h2':'Ramassage & Livraison','sl.d2':'Notre Équipe De Livreurs Assure La Collecte Et La Livraison Dans Les Délais Promis.',
+'sl.t3':'Qualité','sl.h3':'Repassage Soigné','sl.d3':'Un Repassage Impeccable Pour Que Vos Vêtements Soient Toujours Prêts À Porter.',
+'sl.t4':'Spécialité','sl.h4':'Nettoyage Chaussures','sl.d4':'Vos Sneakers Et Chaussures Entretenues Comme Neuves Par Nos Spécialistes.',
+'sl.t5':'Maison','sl.h5':'Literie & Couettes','sl.d5':'Un Lavage En Profondeur Pour Une Literie Fraîche Et Hygiénique Au Quotidien.',
+'sl.t6':'Premium','sl.h6':'Abonnement Mensuel','sl.d6':'Rejoignez Notre Programme Premium Et Bénéficiez De Tarifs Préférentiels Et D\'un Accès Prioritaire.',
+'fq.title':'Questions Fréquentes',
+'q1.q':'Quels Sont Vos Délais De Livraison ?','q1.a':'Nous Livrons Généralement Dans Les 24 À 48H Après Le Ramassage. Pour Les Commandes Urgentes, Un Service Express 12H Est Disponible Sur Demande Via WhatsApp.',
+'q2.q':'Quels Sont Les Modes De Paiement Acceptés ?','q2.a':'Nous Acceptons Le Paiement En Espèces À La Livraison, Le Virement Bancaire Et Le Paiement Mobile. Aucune Avance N\'est Requise — Vous Payez Uniquement À La Réception De Votre Linge.',
+'q3.q':'Livrez-Vous Partout À Tanger ?','q3.a':'Oui, Nous Couvrons L\'ensemble De La Ville De Tanger Et Ses Environs Immédiats. Aucun Quartier N\'est Exclu. Contactez-Nous Pour Vérifier La Disponibilité Dans Votre Zone.',
+'q4.q':'Que Se Passe-t-il Si Un Article Est Endommagé ?','q4.a':'Tous Vos Articles Sont Assurés Pendant L\'intégralité Du Processus. En Cas De Dommage, Nous Prenons En Charge Le Remplacement Ou Procédons À Un Remboursement Intégral Sans Discussion.',
+'q5.q':'Puis-Je Annuler Ou Modifier Ma Commande ?','q5.a':'Oui, Vous Pouvez Annuler Ou Modifier Votre Commande Jusqu\'à 1H Avant Le Ramassage Prévu Via WhatsApp, Par Téléphone Ou Depuis Votre Espace Client Sur Le Site.',
+'q6.q':'Comment Fonctionne L\'abonnement Mensuel ?','q6.a':'L\'abonnement Mensuel Vous Donne Accès À Des Tarifs Préférentiels, Une Priorité De Prise En Charge Et Un Suivi Personnalisé. Contactez-Nous Pour Obtenir Un Devis Adapté À Vos Besoins.',
+'ft.svc':'Services','ft.nav':'Navigation','ft.ct':'Contact','ft.login':'Mon Compte','ft.made':'Conçu Avec ❤️ À Tanger',
+'nav.account':'Mon Compte',
+'esp.lbl':'Espace Personnel','esp.title':'Votre Compte MyFRESH',
+'esp.sub':'Créez votre compte pour accéder à votre espace personnel. Suivez vos commandes, consultez votre historique et restez informé à chaque étape.',
+'esp.login':'✦ Se Connecter','esp.register':'Créer Un Compte →',
+'esp.dashboard':'📊 Mon Dashboard','esp.logout':'Se Déconnecter',
+'esp.c1t':'Suivi En Temps Réel','esp.c1d':'Visualisez l\'avancement de votre commande étape par étape, avec notifications automatiques.',
+'esp.c2t':'Historique Complet','esp.c2d':'Accédez à toutes vos commandes passées, consultez les détails et les montants.',
+'esp.c3t':'Messages De Notre Équipe','esp.c3d':'Recevez les commentaires et mises à jour personnalisés de notre équipe directement dans votre espace.',
+'esp.c4t':'Accès Abonnement Premium','esp.c4d':'Les abonnés profitent de tarifs préférentiels, priorité et suivi renforcé depuis leur compte.'
+},
+en:{
+'nav.how':'How It Works','nav.svc':'Services','nav.tarif':'Pricing','nav.proc':'Tracking','nav.book':'Book Now',
+'hero.badge':'Tangier, Morocco — Premium Service',
+'hero.h1':'Your Laundry & Home Care Platform',
+'hero.sub':'We Clear, You Relax.',
+'hero.c1':'✦ Order Now','hero.c2':'Explore Our Services →',
+'st.cl':'Clients','st.flex':'Flexibility','st.h':'H/7 Available','st.rt':'% Satisfaction',
+'part.lbl':'Our Partners',
+'how.lbl':'The Process','how.title':'How It Works',
+'how.sub':'In 3 Simple Steps, Your Laundry Is Picked Up, Washed And Delivered Right To Your Door.',
+'s1.t':'Order Online','s1.d':'Choose Your Services, Select A Date And Provide Your Address. Fast And Easy.',
+'s2.t':'We Handle Everything','s2.d':'Home Pickup, Washing And Ironing According To Your Preferences — With Care And Professionalism.',
+'s3.t':'Delivered To Your Door','s3.d':'Your Clean And Folded Laundry Is Delivered To You. Track Every Step In Real Time From Your Account.',
+'svc.lbl':'Our Services','svc.title':'Everything You Need',
+'svc.sub':'From A Simple T-shirt To An XXL Duvet, Quality Service At A Competitive Price',
+'v.pop':'Most Popular','v.eco':'Economical','v.hm':'At Home','v.sp':'House Specialty','v.mai':'Home & Comfort','v.ex':'Exclusive — Monthly Subscription',
+'v1.t':'Wash & Iron Per Item','v1.d':'Each Garment Treated Individually With Care. Perfect For Your Professional And Special Outfits.',
+'v2.t':'Batch Wash (No Ironing)','v2.d':'Batch Washing For Your Everyday Laundry. Ideal For Students With Large Volumes.',
+'v3.t':'Home Ironing By Appointment','v3.d':'Our Agent Comes To Your Home At Your Convenience To Iron Your Clothes On-Site.',
+'v4.t':'Shoe Cleaning','v4.d':'Sneakers, Dress Shoes And Boots Restored Like New. Professional And Careful Treatment.',
+'v5.t':'Bedding & Duvets','v5.d':'Deep Washing Of Your Bedding, Duvets And Sheets. Guaranteed Hygiene And Freshness.',
+'v6.t':'Curtains, Cushions & Soft Toys','v6.d':'Exclusive Service For Non-Clothing Items. Monthly Subscription With Priority And Preferential Rates.',
+'tar.lbl':'Pricing Grid','tar.title':'Transparent And Competitive Prices',
+'tar.sub':'Every Service At Its Fair Price. No Surprises At Delivery.',
+'t1.n':'Shirt / T-shirt','t1.d':'Individual Wash + Iron',
+'t2.n':'Standard Batch','t2.d':'Batch Washing (No Ironing)',
+'t3.n':'Pants / Jeans','t3.d':'Individual Wash + Iron',
+'t4.n':'Shoes','t4.d':'Complete Professional Cleaning',
+'t5.n':'Bedding & Duvet','t5.d':'Deep Washing',
+'t6.n':'Home Ironing','t6.d':'Home Visit By Appointment',
+'t7.n':'Curtains','t7.d':'Specialized Washing And Care',
+'t8.n':'Monthly Subscription','t8.d':'Priority Access + Reduced Rates',
+'t.pp':'/ Item','t.pl':'/ Batch','t.par':'/ Pair','t.pa':'/ Item','t.ps':'/ Session','t.pop':'Popular','t.best':'Best Deal',
+'ord.lbl':'Booking','ord.title':'Ready To Order?',
+'ord.sub':'Fill Out The Form, We\'ll Contact You Within 30 Minutes To Confirm Pickup.',
+'pk1':'Same-Day Pickup (Within 2H)','pk2':'WhatsApp Confirmation Guaranteed',
+'pk3':'Pay On Delivery — Zero Upfront','pk4':'Your Items Insured Throughout The Process',
+'form.title':'📋 Your Order',
+'f.nm':'First & Last Name','f.ph':'Phone','f.em':'Email','f.opt':'(Optional)',
+'f.ad':'Pickup Address','f.dt':'Preferred Date','f.sl':'Time Slot',
+'f.sv':'Requested Services','f.nt':'Special Instructions For Your Order','f.sub':'✦ Send My Order',
+'sc1':'Wash & Iron','sc2':'Batch (No Iron)','sc3':'Home Ironing','sc4':'Shoes','sc5':'Bedding & Duvet','sc6':'Curtains & Cushions',
+'ok.t':'Order Sent!','ok.d':'We\'ll Contact You Within 30 Minutes To Confirm Pickup. Thank You For Trusting MyFRESH!',
+'stats.lbl':'Why MyFRESH','stats.title':'Your Clean Laundry, With Zero Effort.',
+'st1.t':'Over 1000 Satisfied Clients','st1.d':'A Trusted Community In Tangier. Every Client Is Unique And Deserves The Best Service.',
+'st2.t':'Flexibility & Accessibility 24H/7','st2.d':'Order Any Time Of Day Or Night. We Are Always Available For You.',
+'st3.t':'Zero Effort On Your Part','st3.d':'Order Online, We Pick Up, Process And Deliver. You Have Nothing Else To Do.',
+'st4.t':'100% Satisfaction Guaranteed','st4.d':'If You Are Not Satisfied, We Reprocess For Free. Your Satisfaction Is Our Absolute Priority.',
+'st5.t':'Competitive Pricing','st5.d':'Transparent And Accessible Prices. Clear Price Grid With No Hidden Fees Or Bad Surprises.',
+'st6.t':'Speed & Door-To-Door Delivery','st6.d':'Pickup And Delivery Directly To Your Address. Fast, Punctual And Careful Every Time.',
+'sim.notice':'⚠️ This Simulation Is For Connected Clients Only. Create An Account And Place An Order To Track Your Laundry In Real Time.',
+'sim.start':'▶ View Simulation','sim.reset':'↺ Reset','sim.hint':'MyFRESH Process Demonstration',
+'pr.lbl':'Order Tracking','pr.title':'Your Clean Laundry, With Zero Effort.',
+'pr.sub':'Every Step Of Your Order Is Tracked And Updated In Real Time. Log In After Your Order To Access Your Personal Tracking.',
+'pr.order':'Clothing Batch — 8 Items','pr.date':'Picked Up On April 3, 2025 At 09:30',
+'pr.s1':'Order Confirmed','pr.s2':'Pickup Completed','pr.s3':'Washing In Progress','pr.s4':'Ironing','pr.s5':'Packaging & Quality Check','pr.s6':'Home Delivery',
+'pr.f1':'SMS & WhatsApp Notifications At Every Step','pr.f2':'Estimated Delivery 24H To 48H After Pickup',
+'pr.f3':'Items Insured And Verified Before Delivery','pr.f4':'Systematic Quality Control Before Packaging',
+'te.lbl':'Testimonials','te.title':'They Trust Us',
+'te1.t':'Revolutionary Service! I Order Sunday Evening And Everything Comes Back Monday Morning. As A University Residence Student, It\'s An Incredible Time Saver.',
+'te2.t':'Home Ironing Saved Me Before An Important Interview. Punctual Delivery, Impeccable Clothes. I Recommend 100% To All Tangier Professionals.',
+'te3.t':'Curtains And Duvets Came Back Absolutely Spotless. The Shoe Cleaning Service Is Exceptional. Very Reasonable Prices For Premium Quality.',
+'te.s':'Student, University Residence Tangier','te.p':'Young Professional, Tangier','te.h':'Resident, Boukhalef Tangier',
+'rev.title':'Share Your Experience','rev.sub':'Your Review Helps Us Improve Our Services And Helps Other Clients Choose MyFRESH',
+'rev.nm':'Your Name','rev.role':'Your Profile','rev.msg':'Your Review','rev.sub2':'✦ Publish My Review',
+'sl.lbl':'MyFRESH Gallery','sl.title':'Our World In Images','sl.sub':'Discover Our Facilities, Our Team And The Quality Of Our Services Every Day',
+'sl.t1':'Pressing','sl.h1':'Professional Washing','sl.d1':'Every Garment Is Treated With Premium Products And Latest Generation Machines.',
+'sl.t2':'Logistics','sl.h2':'Pickup & Delivery','sl.d2':'Our Delivery Team Ensures Collection And Delivery Within The Promised Timeframes.',
+'sl.t3':'Quality','sl.h3':'Careful Ironing','sl.d3':'Impeccable Ironing So Your Clothes Are Always Ready To Wear.',
+'sl.t4':'Specialty','sl.h4':'Shoe Cleaning','sl.d4':'Your Sneakers And Shoes Maintained Like New By Our Specialists.',
+'sl.t5':'Home','sl.h5':'Bedding & Duvets','sl.d5':'Deep Washing For Fresh And Hygienic Bedding Every Day.',
+'sl.t6':'Premium','sl.h6':'Monthly Subscription','sl.d6':'Join Our Premium Program And Benefit From Preferential Rates And Priority Access.',
+'fq.title':'Frequently Asked Questions',
+'q1.q':'What Are Your Delivery Times?','q1.a':'We Generally Deliver Within 24 To 48H After Pickup. For Urgent Orders, An Express 12H Service Is Available On Request Via WhatsApp.',
+'q2.q':'What Payment Methods Are Accepted?','q2.a':'We Accept Cash On Delivery, Bank Transfer And Mobile Payment. No Upfront Payment Required — You Pay Only Upon Receipt Of Your Laundry.',
+'q3.q':'Do You Deliver Everywhere In Tangier?','q3.a':'Yes, We Cover The Entire City Of Tangier And Its Immediate Surroundings. No Neighborhood Is Excluded. Contact Us To Check Availability In Your Area.',
+'q4.q':'What Happens If An Item Is Damaged?','q4.a':'All Your Items Are Insured Throughout The Entire Process. In Case Of Damage, We Cover Replacement Or Proceed With A Full Refund Without Discussion.',
+'q5.q':'Can I Cancel Or Modify My Order?','q5.a':'Yes, You Can Cancel Or Modify Your Order Up To 1H Before The Scheduled Pickup Via WhatsApp, By Phone Or From Your Client Account On The Site.',
+'q6.q':'How Does The Monthly Subscription Work?','q6.a':'The Monthly Subscription Gives You Access To Preferential Rates, Priority Processing And Personalized Follow-Up. Contact Us For A Quote Tailored To Your Needs.',
+'ft.svc':'Services','ft.nav':'Navigation','ft.ct':'Contact','ft.login':'My Account','ft.made':'Made With ❤️ In Tangier',
+'nav.account':'My Account',
+'esp.lbl':'Personal Space','esp.title':'Your MyFRESH Account',
+'esp.sub':'Create your account to access your personal space. Track your orders, view your history and stay informed at every step.',
+'esp.login':'✦ Sign In','esp.register':'Create An Account →',
+'esp.dashboard':'📊 My Dashboard','esp.logout':'Sign Out',
+'esp.c1t':'Real-Time Tracking','esp.c1d':'See your order progress step by step with automatic notifications.',
+'esp.c2t':'Complete History','esp.c2d':'Access all your past orders, view details and amounts.',
+'esp.c3t':'Team Messages','esp.c3d':'Receive personalized comments and updates from our team directly in your space.',
+'esp.c4t':'Premium Subscription Access','esp.c4d':'Subscribers enjoy preferential rates, priority and enhanced tracking from their account.'
+},
+es:{
+'nav.how':'Cómo Funciona','nav.svc':'Servicios','nav.tarif':'Precios','nav.proc':'Seguimiento','nav.book':'Reservar',
+'hero.badge':'Tánger, Marruecos — Servicio Premium',
+'hero.h1':'Tu Plataforma De Lavandería Y Cuidado Del Hogar',
+'hero.sub':'Nosotros Limpiamos, Tú Descansas.',
+'hero.c1':'✦ Pedir Ahora','hero.c2':'Descubrir Nuestros Servicios →',
+'st.cl':'Clientes','st.flex':'Flexibilidad','st.h':'H/7 Disponible','st.rt':'% Satisfacción',
+'part.lbl':'Nuestros Socios',
+'how.lbl':'El Proceso','how.title':'Cómo Funciona',
+'how.sub':'En 3 Pasos Simples, Tu Ropa Es Recogida, Lavada Y Entregada Directamente En Tu Puerta.',
+'s1.t':'Pide Online','s1.d':'Elige Tus Servicios, Selecciona Una Fecha E Indica Tu Dirección. Rápido Y Sencillo.',
+'s2.t':'Nosotros Nos Encargamos','s2.d':'Recogida A Domicilio, Lavado Y Planchado Según Tus Preferencias — Con Cuidado Y Profesionalismo.',
+'s3.t':'Entregado En Tu Puerta','s3.d':'Tu Ropa Limpia Y Doblada Te Es Entregada. Sigue Cada Etapa En Tiempo Real Desde Tu Cuenta.',
+'svc.lbl':'Nuestros Servicios','svc.title':'Todo Lo Que Necesitas',
+'svc.sub':'De La Camiseta Al Edredón XXL, Un Servicio De Calidad A Un Precio Competitivo',
+'v.pop':'El Más Popular','v.eco':'Económico','v.hm':'A Domicilio','v.sp':'Especialidad Casa','v.mai':'Hogar & Confort','v.ex':'Exclusivo — Suscripción Mensual',
+'v1.t':'Lavado Y Planchado Por Pieza','v1.d':'Cada Prenda Tratada Individualmente Con Cuidado. Perfecto Para Tus Trajes Profesionales Y Especiales.',
+'v2.t':'Lavado Por Lote (Sin Planchar)','v2.d':'Lavado En Lote Para Tu Día A Día. Ideal Para Estudiantes Con Un Gran Volumen De Ropa.',
+'v3.t':'Planchado A Domicilio Con Cita','v3.d':'Nuestro Agente Va A Tu Casa Cuando Puedas Para Planchar Tu Ropa In Situ.',
+'v4.t':'Limpieza De Zapatos','v4.d':'Zapatillas, Zapatos De Ciudad Y Botas Restaurados Como Nuevos. Tratamiento Profesional Y Cuidadoso.',
+'v5.t':'Ropa De Cama Y Edredones','v5.d':'Lavado En Profundidad De Tu Ropa De Cama, Edredones Y Sábanas. Higiene Y Frescura Garantizadas.',
+'v6.t':'Cortinas, Cojines Y Peluches','v6.d':'Servicio Exclusivo Para Artículos No Textiles. Suscripción Mensual Con Prioridad Y Tarifa Preferencial.',
+'tar.lbl':'Tarifa','tar.title':'Precios Transparentes Y Competitivos',
+'tar.sub':'Cada Servicio A Su Precio Justo. Sin Sorpresas En La Entrega.',
+'t1.n':'Camisa / Camiseta','t1.d':'Lavado + Planchado Individual',
+'t2.n':'Lote Estándar','t2.d':'Lavado En Lote (Sin Planchar)',
+'t3.n':'Pantalón / Jeans','t3.d':'Lavado + Planchado Individual',
+'t4.n':'Zapatos','t4.d':'Limpieza Profesional Completa',
+'t5.n':'Ropa De Cama','t5.d':'Lavado En Profundidad',
+'t6.n':'Planchado Domicilio','t6.d':'Visita A Domicilio Con Cita',
+'t7.n':'Cortinas','t7.d':'Lavado Y Cuidado Especializado',
+'t8.n':'Suscripción Mensual','t8.d':'Acceso Prioritario + Tarifa Reducida',
+'t.pp':'/ Pieza','t.pl':'/ Lote','t.par':'/ Par','t.pa':'/ Artículo','t.ps':'/ Sesión','t.pop':'Popular','t.best':'Mejor Oferta',
+'ord.lbl':'Reserva','ord.title':'¿Listo Para Pedir?',
+'ord.sub':'Rellena El Formulario, Te Contactaremos En 30 Minutos Para Confirmar La Recogida.',
+'pk1':'Recogida El Mismo Día (En 2H)','pk2':'Confirmación Por WhatsApp Garantizada',
+'pk3':'Pago En Entrega — Cero Anticipo','pk4':'Tus Artículos Asegurados Durante Todo El Proceso',
+'form.title':'📋 Tu Pedido',
+'f.nm':'Nombre Y Apellido','f.ph':'Teléfono','f.em':'Email','f.opt':'(Opcional)',
+'f.ad':'Dirección De Recogida','f.dt':'Fecha Deseada','f.sl':'Franja Horaria',
+'f.sv':'Servicios Deseados','f.nt':'Instrucciones Especiales Para Tu Pedido','f.sub':'✦ Enviar Mi Pedido',
+'sc1':'Lavado Y Planchado','sc2':'Lote Sin Planchar','sc3':'Planchado Domicilio','sc4':'Zapatos','sc5':'Ropa De Cama','sc6':'Cortinas Y Cojines',
+'ok.t':'¡Pedido Enviado!','ok.d':'Te Contactaremos En 30 Minutos Para Confirmar La Recogida. ¡Gracias Por Confiar En MyFRESH!',
+'stats.lbl':'Por Qué MyFRESH','stats.title':'Tu Ropa Limpia, Con Cero Esfuerzo.',
+'st1.t':'Más De 1000 Clientes Satisfechos','st1.d':'Una Comunidad De Confianza En Tánger. Cada Cliente Es Único Y Merece El Mejor Servicio.',
+'st2.t':'Flexibilidad Y Accesibilidad 24H/7','st2.d':'Pide A Cualquier Hora Del Día O De La Noche. Siempre Estamos Disponibles Para Ti.',
+'st3.t':'Cero Esfuerzo De Tu Parte','st3.d':'Pide Online, Recogemos, Tratamos Y Entregamos. No Tienes Nada Más Que Hacer.',
+'st4.t':'100% Satisfacción Garantizada','st4.d':'Si No Estás Satisfecho, Retratamos Gratis. Tu Satisfacción Es Nuestra Prioridad Absoluta.',
+'st5.t':'Precios Competitivos','st5.d':'Precios Transparentes Y Accesibles. Tarifa Clara Sin Cargos Ocultos Ni Malas Sorpresas.',
+'st6.t':'Rapidez Y Entrega En La Puerta','st6.d':'Recogida Y Entrega Directamente En Tu Dirección. Rápido, Puntual Y Cuidadoso Cada Vez.',
+'sim.notice':'⚠️ Esta Simulación Es Solo Para Clientes Conectados. Crea Una Cuenta Y Realiza Un Pedido Para Rastrear Tu Ropa En Tiempo Real.',
+'sim.start':'▶ Ver Simulación','sim.reset':'↺ Reiniciar','sim.hint':'Demostración Del Proceso MyFRESH',
+'pr.lbl':'Seguimiento De Pedido','pr.title':'Tu Ropa Limpia, Con Cero Esfuerzo.',
+'pr.sub':'Cada Etapa De Tu Pedido Es Rastreada Y Actualizada En Tiempo Real. Inicia Sesión Después De Tu Pedido Para Acceder A Tu Seguimiento Personal.',
+'pr.order':'Lote De Ropa — 8 Prendas','pr.date':'Recogido El 3 De Abril 2025 A Las 09:30',
+'pr.s1':'Pedido Confirmado','pr.s2':'Recogida Realizada','pr.s3':'Lavado En Proceso','pr.s4':'Planchado','pr.s5':'Embalaje Y Control','pr.s6':'Entrega A Domicilio',
+'pr.f1':'Notificaciones SMS Y WhatsApp En Cada Etapa','pr.f2':'Entrega Estimada 24H A 48H Después De La Recogida',
+'pr.f3':'Artículos Asegurados Y Verificados Antes De La Entrega','pr.f4':'Control De Calidad Sistemático Antes Del Embalaje',
+'te.lbl':'Testimonios','te.title':'Confían En Nosotros',
+'te1.t':'¡Servicio Revolucionario! Pido El Domingo Por La Noche Y Todo Vuelve El Lunes Por La Mañana. Como Estudiante En Residencia Universitaria, Es Un Ahorro De Tiempo Increíble.',
+'te2.t':'El Planchado A Domicilio Me Salvó Antes De Una Entrevista Importante. Repartidor Puntual, Ropa Impecable. Lo Recomiendo Al 100% A Todos Los Profesionales De Tánger.',
+'te3.t':'Cortinas Y Edredones Volvieron Absolutamente Impecables. El Servicio De Limpieza De Zapatos Es Excepcional. Precios Muy Razonables Para Una Calidad Premium.',
+'te.s':'Estudiante, Residencia Universitaria Tánger','te.p':'Joven Profesional, Tánger','te.h':'Residente, Boukhalef Tánger',
+'rev.title':'Comparte Tu Experiencia','rev.sub':'Tu Opinión Nos Ayuda A Mejorar Nuestros Servicios Y A Ayudar A Otros Clientes A Elegir MyFRESH',
+'rev.nm':'Tu Nombre','rev.role':'Tu Perfil','rev.msg':'Tu Opinión','rev.sub2':'✦ Publicar Mi Opinión',
+'sl.lbl':'Galería MyFRESH','sl.title':'Nuestro Mundo En Imágenes','sl.sub':'Descubre Nuestras Instalaciones, Nuestro Equipo Y La Calidad De Nuestros Servicios Cada Día',
+'sl.t1':'Tintorería','sl.h1':'Lavado Profesional','sl.d1':'Cada Prenda Es Tratada Con Productos Premium Y Máquinas De Última Generación.',
+'sl.t2':'Logística','sl.h2':'Recogida Y Entrega','sl.d2':'Nuestro Equipo De Repartidores Asegura La Recogida Y Entrega En Los Plazos Prometidos.',
+'sl.t3':'Calidad','sl.h3':'Planchado Cuidadoso','sl.d3':'Un Planchado Impecable Para Que Tu Ropa Siempre Esté Lista Para Usar.',
+'sl.t4':'Especialidad','sl.h4':'Limpieza De Zapatos','sl.d4':'Tus Zapatillas Y Zapatos Mantenidos Como Nuevos Por Nuestros Especialistas.',
+'sl.t5':'Hogar','sl.h5':'Ropa De Cama Y Edredones','sl.d5':'Lavado En Profundidad Para Una Ropa De Cama Fresca E Higiénica Cada Día.',
+'sl.t6':'Premium','sl.h6':'Suscripción Mensual','sl.d6':'Únete A Nuestro Programa Premium Y Benefíciate De Tarifas Preferenciales Y Acceso Prioritario.',
+'fq.title':'Preguntas Frecuentes',
+'q1.q':'¿Cuáles Son Sus Plazos De Entrega?','q1.a':'Generalmente Entregamos En 24 A 48H Después De La Recogida. Para Pedidos Urgentes, Un Servicio Express 12H Está Disponible A Petición Vía WhatsApp.',
+'q2.q':'¿Qué Métodos De Pago Aceptan?','q2.a':'Aceptamos Efectivo En La Entrega, Transferencia Bancaria Y Pago Móvil. No Se Requiere Anticipo — Solo Pagas Al Recibir Tu Ropa.',
+'q3.q':'¿Entregan En Toda La Ciudad De Tánger?','q3.a':'Sí, Cubrimos Toda La Ciudad De Tánger Y Sus Alrededores Inmediatos. Ningún Barrio Está Excluido. Contáctanos Para Verificar La Disponibilidad En Tu Zona.',
+'q4.q':'¿Qué Pasa Si Un Artículo Se Daña?','q4.a':'Todos Tus Artículos Están Asegurados Durante Todo El Proceso. En Caso De Daño, Cubrimos El Reemplazo O Procedemos Con Un Reembolso Completo Sin Discusión.',
+'q5.q':'¿Puedo Cancelar O Modificar Mi Pedido?','q5.a':'Sí, Puedes Cancelar O Modificar Tu Pedido Hasta 1H Antes De La Recogida Programada Vía WhatsApp, Por Teléfono O Desde Tu Cuenta En El Sitio.',
+'q6.q':'¿Cómo Funciona La Suscripción Mensual?','q6.a':'La Suscripción Mensual Te Da Acceso A Tarifas Preferenciales, Prioridad En La Atención Y Seguimiento Personalizado. Contáctanos Para Un Presupuesto Adaptado A Tus Necesidades.',
+'ft.svc':'Servicios','ft.nav':'Navegación','ft.ct':'Contacto','ft.login':'Mi Cuenta','ft.made':'Hecho Con ❤️ En Tánger',
+'nav.account':'Mi Cuenta',
+'esp.lbl':'Espacio Personal','esp.title':'Tu Cuenta MyFRESH',
+'esp.sub':'Crea tu cuenta para acceder a tu espacio personal. Sigue tus pedidos, consulta tu historial y mantente informado en cada etapa.',
+'esp.login':'✦ Iniciar Sesión','esp.register':'Crear Una Cuenta →',
+'esp.dashboard':'📊 Mi Dashboard','esp.logout':'Cerrar Sesión',
+'esp.c1t':'Seguimiento En Tiempo Real','esp.c1d':'Visualiza el progreso de tu pedido paso a paso con notificaciones automáticas.',
+'esp.c2t':'Historial Completo','esp.c2d':'Accede a todos tus pedidos pasados, consulta los detalles y los importes.',
+'esp.c3t':'Mensajes De Nuestro Equipo','esp.c3d':'Recibe comentarios y actualizaciones personalizadas de nuestro equipo directamente en tu espacio.',
+'esp.c4t':'Acceso Suscripción Premium','esp.c4d':'Los suscriptores disfrutan de tarifas preferenciales, prioridad y seguimiento reforzado desde su cuenta.'
+}};
+
+let lang='fr';
+function setL(l){
+  lang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`.lb[onclick="setL('${l}')"]`).classList.add('on');
+  const d=T[l];
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    const k=el.getAttribute('data-i');
+    if(d[k])el.textContent=d[k];
+  });
+  document.documentElement.lang=l;
+}
+
+/* MOBILE MENU */
+function toggleMob(){document.getElementById('mob-menu').classList.toggle('open');}
+
+/* STARS REVIEW */
+let starVal=5;
+function setStar(n){
+  starVal=n;
+  document.getElementById('star-val').value=n+' étoile'+(n>1?'s':'');
+  document.querySelectorAll('.star-btn').forEach((b,i)=>{
+    b.classList.toggle('active',i<n);
+  });
+}
+setStar(5);
+
+/* WEB3FORMS */
+document.getElementById('mf').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=this.querySelector('.fsub');
+  btn.textContent='⏳ Envoi...';btn.disabled=true;
+  try{
+    const fd=new FormData(this);
+    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+    const data=await res.json();
+    if(data.success){this.style.display='none';document.getElementById('fs').style.display='block';}
+    else{btn.textContent=T[lang]['f.sub']||'✦ Envoyer';btn.disabled=false;alert('Erreur. Réessayez ou contactez via WhatsApp.');}
+  }catch{btn.textContent=T[lang]['f.sub']||'✦ Envoyer';btn.disabled=false;alert('Erreur réseau.');}
+});
+document.getElementById('rf').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=this.querySelector('.fsub');
+  btn.textContent='⏳ Publication...';btn.disabled=true;
+  try{
+    const fd=new FormData(this);
+    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+    const data=await res.json();
+    if(data.success){btn.textContent='✅ Publié !';btn.style.background='#4eff91';}
+    else{btn.textContent=T[lang]['rev.sub2']||'✦ Publier';btn.disabled=false;}
+  }catch{btn.textContent=T[lang]['rev.sub2']||'✦ Publier';btn.disabled=false;}
+});
+
+/* CHECKBOX */
+function tSc(el){el.classList.toggle('on');el.querySelector('input').checked=el.classList.contains('on');}
+
+/* SIMULATION */
+const SIM_T=['09:00','09:15','10:00','12:30','14:00','17:00'];
+const SIM_S={
+  fr:['📋 Commande Confirmée...','🚗 Ramassage En Route...','🫧 Lavage En Cours...','👔 Repassage En Cours...','📦 Emballage & Contrôle Qualité...','🏠 Livraison Effectuée — Commande Complète ! 🎉'],
+  en:['📋 Order Confirmed...','🚗 Pickup On The Way...','🫧 Washing In Progress...','👔 Ironing In Progress...','📦 Packaging & Quality Check...','🏠 Delivered — Order Complete! 🎉'],
+  es:['📋 Pedido Confirmado...','🚗 Recogida En Camino...','🫧 Lavado En Proceso...','👔 Planchado En Proceso...','📦 Embalaje Y Control De Calidad...','🏠 Entregado — ¡Pedido Completo! 🎉']
+};
+let simStep=-1;
+function simNext(){
+  if(simStep>=5)return;
+  simStep++;
+  document.querySelectorAll('.tl-step').forEach((s,i)=>{
+    const d=s.querySelector('.tl-dot');
+    if(i<simStep){s.className='tl-step';d.className='tl-dot done';}
+    else if(i===simStep){s.className='tl-step';d.className='tl-dot actv';}
+    else{s.className='tl-step wait';d.className='tl-dot wait';}
+    document.getElementById('ts'+i).textContent=i<=simStep?SIM_T[i]:'—';
+  });
+  document.getElementById('tl-fill').style.height=Math.round((simStep/5)*100)+'%';
+  document.getElementById('ss').textContent=(SIM_S[lang]||SIM_S.fr)[simStep];
+  document.getElementById('snb').textContent=simStep>=5?'✓ '+(lang==='en'?'Complete':lang==='es'?'Completado':'Terminé'):(lang==='en'?'▶ Next Step':lang==='es'?'▶ Siguiente Paso':'▶ Étape Suivante');
+}
+function simReset(){
+  simStep=-1;
+  document.querySelectorAll('.tl-step').forEach((s,i)=>{s.className='tl-step wait';s.querySelector('.tl-dot').className='tl-dot wait';document.getElementById('ts'+i).textContent='—';});
+  document.getElementById('tl-fill').style.height='0%';
+  document.getElementById('snb').textContent=T[lang]['sim.start']||'▶ Voir La Simulation';
+  document.getElementById('ss').textContent=T[lang]['sim.hint']||'Démonstration Du Processus MyFRESH';
+}
+
+/* FAQ */
+function tFaq(el){
+  const i=el.parentElement;
+  const op=i.classList.contains('op');
+  document.querySelectorAll('.faq-i').forEach(x=>x.classList.remove('op'));
+  if(!op)i.classList.add('op');
+}
+
+/* SLIDESHOW */
+let slideIdx=0;
+const slidesEl=document.getElementById('slides');
+function buildDots(){
+  const total=document.querySelectorAll('.slide').length;
+  const dotsEl=document.getElementById('sdots');
+  dotsEl.innerHTML='';
+  for(let i=0;i<total;i++){
+    const d=document.createElement('div');
+    d.className='sdot2'+(i===0?' on':'');
+    d.onclick=()=>goSlide(i);
+    dotsEl.appendChild(d);
+  }
+}
+function goSlide(n){
+  const slides=document.querySelectorAll('.slide');
+  const perView=window.innerWidth<=600?1:window.innerWidth<=960?2:3;
+  const maxIdx=Math.max(0,slides.length-perView);
+  slideIdx=Math.max(0,Math.min(n,maxIdx));
+  const w=slides[0].offsetWidth+24;
+  slidesEl.style.transform=`translateX(-${slideIdx*w}px)`;
+  document.querySelectorAll('.sdot2').forEach((d,i)=>d.classList.toggle('on',i===slideIdx));
+}
+function slideMove(d){goSlide(slideIdx+d);}
+window.addEventListener('resize',()=>goSlide(slideIdx));
+buildDots();
+
+/* SCROLL REVEAL */
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in');});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+/* COUNTERS */
+function animC(el,t,dur=1400){
+  let s=0,step=t/(dur/16);
+  const timer=setInterval(()=>{s+=step;if(s>=t){el.textContent=t.toLocaleString();clearInterval(timer);}else el.textContent=Math.floor(s).toLocaleString();},16);
+}
+const co=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const el=x.target;const v=parseInt(el.getAttribute('data-cnt')||el.getAttribute('data-cnt2'));if(v)animC(el,v);co.unobserve(el);}});},{threshold:.5});
+document.querySelectorAll('[data-cnt],[data-cnt2]').forEach(el=>co.observe(el));
+
+/* NAV SHADOW */
+window.addEventListener('scroll',()=>{document.querySelector('nav').style.boxShadow=window.scrollY>40?'0 4px 28px rgba(0,0,0,.35)':'none';});
+</script>
+</body>
+</html>
