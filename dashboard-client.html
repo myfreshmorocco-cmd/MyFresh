@@ -13,11 +13,11 @@ body{font-family:'Montserrat',sans-serif;background:#f4fafd;color:#080982;min-he
 
 /* ── TOP NAV ── */
 .topnav{background:var(--navy);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.2);}
-.nav-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;}
-.nav-logo span{color:var(--yellow);}
+.nav-logo{font-size:20px;font-weight:900;color:var(--yellow);text-decoration:none;}
+.nav-logo span{color:#fff;}
 .nav-right{display:flex;align-items:center;gap:16px;}
 .nav-user{display:flex;align-items:center;gap:10px;}
-.nav-av{width:36px;height:36px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;}
+.nav-av{width:36px;height:48px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;}
 .nav-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);}
 .nav-site{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;font-weight:600;transition:.2s;}
 .nav-site:hover{color:var(--sky);}
@@ -58,7 +58,7 @@ body{font-family:'Montserrat',sans-serif;background:#f4fafd;color:#080982;min-he
 .lot-steps{display:flex;justify-content:space-between;position:relative;z-index:1;}
 .lot-steps::before{content:'';position:absolute;top:17px;left:0;right:0;height:2px;background:rgba(8,9,130,.1);z-index:0;}
 .lot-step{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;}
-.lot-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(8,9,130,.08);border:2px solid rgba(8,9,130,.1);position:relative;z-index:2;transition:.5s;}
+.lot-dot{width:36px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(8,9,130,.08);border:2px solid rgba(8,9,130,.1);position:relative;z-index:2;transition:.5s;}
 .lot-dot.done{background:var(--sky);border-color:var(--sky);}
 .lot-dot.actv{background:var(--yellow);border-color:var(--yellow);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,232,23,.4)}50%{box-shadow:0 0 0 8px rgba(255,232,23,0)}}
@@ -155,9 +155,9 @@ body{font-family:'Montserrat',sans-serif;background:#f4fafd;color:#080982;min-he
 
 <!-- TOP NAV -->
 <nav class="topnav">
-  <a href="myfresh.html" class="nav-logo">My<span>FRESH</span></a>
+  <a href="index.html" class="nav-logo"><span>My</span>FRESH</a>
   <div class="nav-right">
-    <a href="myfresh.html" class="nav-site">← Site Principal</a>
+    <a href="index.html" class="nav-site">← Site Principal</a>
     <div class="nav-user">
       <div class="nav-av" id="nav-av">?</div>
       <span class="nav-name" id="nav-name">Chargement...</span>
@@ -173,7 +173,7 @@ body{font-family:'Montserrat',sans-serif;background:#f4fafd;color:#080982;min-he
     <div class="greeting-tag">Mon Espace MyFRESH</div>
     <div class="greeting-h">Bonjour, <span id="client-name">...</span> 👋</div>
     <div class="greeting-sub">Suivez vos commandes en temps réel, consultez votre historique et gérez votre profil depuis cet espace personnel.</div>
-    <a href="myfresh.html#order" class="greeting-cta">✦ Passer Une Nouvelle Commande</a>
+    <a href="index.html#order" class="greeting-cta">✦ Passer Une Nouvelle Commande</a>
   </div>
 
   <!-- KPI MINI -->
@@ -264,7 +264,7 @@ const STATUS_ORDER = {'En attente':0,'En cours':1,'Lavage':2,'Repassage':3,'Prê
   const { data:{ session } } = await sb.auth.getSession();
   if(!session){ window.location.href='login.html'; return; }
   currentUser = session.user;
-  const { data:profile } = await sb.from('profiles').select('*').eq('id',session.user.id).single();
+  const { data:profile } = await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
   if(profile?.role==='admin'){ window.location.href='dashboard-admin.html'; return; }
   userProfile = profile;
   populateUI();
@@ -328,7 +328,7 @@ function renderLastOrder(){
         <span class="empty-icon">🧺</span>
         <div class="empty-title">Aucune Commande Encore</div>
         <div class="empty-sub">Passez votre première commande et suivez son évolution en temps réel depuis cet espace.</div>
-        <a href="myfresh.html#order" style="display:inline-flex;align-items:center;gap:7px;margin-top:20px;background:var(--navy);color:#fff;padding:12px 24px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;">✦ Commander Maintenant</a>
+        <a href="index.html#order" style="display:inline-flex;align-items:center;gap:7px;margin-top:20px;background:var(--navy);color:#fff;padding:12px 24px;border-radius:50px;font-weight:800;font-size:13px;text-decoration:none;">✦ Commander Maintenant</a>
       </div>`;
     return;
   }
