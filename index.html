@@ -28,8 +28,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;al
 .logo-ph:hover{border-color:var(--sky);background:rgba(1,174,241,.08);}
 .logo-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:10px;}
 .logo-ph input{display:none;}
-.logo-txt{font-size:21px;font-weight:900;color:#fff;letter-spacing:-.5px;}
-.logo-txt span{color:var(--yellow);}
+.logo-txt{font-size:21px;font-weight:900;color:#FFFFFF;letter-spacing:-.5px;}
+.logo-txt span{color:#FFE817;}
 .nav-links{display:flex;gap:24px;list-style:none;}
 .nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;transition:.25s;}
 .nav-links a:hover{color:var(--yellow);}
@@ -38,7 +38,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;al
 .nav-account{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff!important;padding:9px 18px;border-radius:50px;transition:.3s!important;}
 .nav-account:hover{background:rgba(255,255,255,.15)!important;color:#fff!important;}
 .nav-account .nav-av-dot{width:8px;height:8px;background:#4eff91;border-radius:50%;animation:pulse2 1.5s infinite;}
-.nav-account-logged{display:flex;align-items:center;gap:8px;background:rgba(78,255,145,.1);border:1px solid rgba(78,255,145,.3);color:#4eff91!important;padding:9px 18px;border-radius:50px;transition:.3s!important;}
+.nav-account-logged{display:flex;align-items:center;gap:8px;background:rgba(255,232,23,.12);border:1px solid rgba(255,232,23,.3);color:var(--yellow)!important;padding:9px 18px;border-radius:50px;transition:.3s!important;}
 .nav-account-logged:hover{background:rgba(78,255,145,.2)!important;}
 .nav-av-mini{width:22px;height:22px;background:linear-gradient(135deg,var(--sky),var(--navy));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:10px;flex-shrink:0;}
 @keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
@@ -94,6 +94,10 @@ section{padding:96px 0;}
 .hero-nums{display:flex;gap:28px;margin-top:44px;padding-top:28px;border-top:1px solid rgba(8,9,130,.12);animation:fadeUp .8s .4s ease both;flex-wrap:wrap;}
 .hn-n{font-size:26px;font-weight:900;color:var(--navy);display:block;}
 .hn-l{font-size:10px;color:rgba(8,9,130,.5);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+.hero-brand-name{font-family:'Playfair Display',serif;font-size:clamp(52px,8vw,96px);font-weight:900;line-height:1;margin-bottom:20px;animation:fadeUp .8s .05s ease both;letter-spacing:-2px;}
+.hbn-my{color:#FFE817;}
+.hbn-fresh{color:#FFFFFF;}
+
 
 .phone-wrap{position:relative;animation:fadeUp .8s .2s ease both;}
 .phone{width:290px;height:540px;background:var(--navy);border:1px solid rgba(1,174,241,.3);border-radius:40px;margin:0 auto;overflow:hidden;box-shadow:0 40px 80px rgba(8,9,130,.35),inset 0 1px 0 rgba(255,255,255,.1);}
@@ -475,6 +479,11 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   <div class="hero-grid">
     <div>
       <div class="hero-badge"><span class="bdot"></span><span data-i="hero.badge">Tanger, Maroc — Service Premium</span></div>
+
+      <div class="hero-brand-name">
+        <span class="hbn-my">My</span><span class="hbn-fresh">FRESH</span>
+      </div>
+
       <h1 class="hero-h1" data-i="hero.h1">Votre Plateforme De Lessive Et D'entretien Ménager</h1>
       <p class="hero-sub" data-i="hero.sub">Ton Linge Propre Avec Zéro Effort.</p>
       <div class="hero-btns">
@@ -557,7 +566,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="svc-c rv" style="transition-delay:.2s"><div class="svc-in"><div class="svc-ic">🏠</div><span class="svc-tag" data-i="v.hm">À Domicile</span><div class="svc-h" data-i="v3.t">Repassage À Domicile Sur RDV</div><p class="svc-p" data-i="v3.d">Notre Agent Se Déplace Chez Vous Selon Votre Disponibilité Pour Repasser Vos Vêtements Sur Place.</p><div class="svc-arr">→</div></div></div>
       <div class="svc-c rv" style="transition-delay:.25s"><div class="svc-in"><div class="svc-ic">👟</div><span class="svc-tag" data-i="v.sp">Spécialité Maison</span><div class="svc-h" data-i="v4.t">Nettoyage Chaussures</div><p class="svc-p" data-i="v4.d">Sneakers, Chaussures De Ville Et Bottes Remises À Neuf. Un Traitement Professionnel Et Soigné.</p><div class="svc-arr">→</div></div></div>
       <div class="svc-c rv" style="transition-delay:.3s"><div class="svc-in"><div class="svc-ic">🛏️</div><span class="svc-tag" data-i="v.mai">Maison & Confort</span><div class="svc-h" data-i="v5.t">Literie & Rideaux</div><p class="svc-p" data-i="v5.d">Lavage En Profondeur De Votre Literie, Couettes Et Draps. Hygiène Et Fraîcheur Garanties.</p><div class="svc-arr">→</div></div></div>
-      <div class="svc-c prem rv" style="transition-delay:.35s"><div class="svc-in"><div class="svc-ic">🌟</div><span class="svc-tag" data-i="v.ex">Exclusif</span><div class="svc-h" data-i="v6.t">Abonnement</div><p class="svc-p" data-i="v6.d">Abonnez-vous et accédez à tous nos services à tarif préférentiel. Priorité de prise en charge, suivi renforcé et flexibilité totale sur l'ensemble de la gamme.</p><div class="svc-arr">→</div></div></div>
+      <div class="svc-c prem rv" style="transition-delay:.35s"><div class="svc-in"><div class="svc-ic">🌟</div><span class="svc-tag" data-i="v.ex">Offre Exclusive</span><div class="svc-h" data-i="v6.t">Tout les produits</div><p class="svc-p" data-i="v6.d">Abonnement. Abonnez-vous et accédez à tous nos services à tarif préférentiel. Priorité de prise en charge, suivi renforcé et flexibilité totale sur l'ensemble de la gamme.</p><div class="svc-arr">→</div></div></div>
     </div>
   </div>
 </section>
@@ -571,7 +580,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="tarif-c rv" style="transition-delay:.1s"><div class="tarif-badge" data-i="t.pop">Populaire</div><span class="tarif-ic">🧺</span><div class="tarif-name" data-i="t2.n">Lot Standard</div><div class="tarif-desc" data-i="t2.d">Lavage En Lot (Sans Repassage)</div><div class="tarif-price">35 MAD <small data-i="t.pl">/ Lot</small></div></div>
       <div class="tarif-c rv" style="transition-delay:.15s"><span class="tarif-ic">👖</span><div class="tarif-name" data-i="t3.n">Pantalon / Jeans</div><div class="tarif-desc" data-i="t3.d">Lavage + Repassage Individuel</div><div class="tarif-price">12 MAD <small data-i="t.pp">/ Pièce</small></div></div>
       <div class="tarif-c rv" style="transition-delay:.2s"><span class="tarif-ic">👟</span><div class="tarif-name" data-i="t4.n">Chaussures</div><div class="tarif-desc" data-i="t4.d">Nettoyage Professionnel Complet</div><div class="tarif-price">25 MAD <small data-i="t.par">/ Paire</small></div></div>
-      <div class="tarif-c rv" style="transition-delay:.25s"><span class="tarif-ic">🛏️</span><div class="tarif-name" data-i="t5.n">Literie & Couette</div><div class="tarif-desc" data-i="t5.d">Lavage En Profondeur</div><div class="tarif-price">60 MAD <small data-i="t.pa">/ Article</small></div></div>
+      <div class="tarif-c rv" style="transition-delay:.25s"><span class="tarif-ic">🛏️</span><div class="tarif-name" data-i="t5.n">Literie & Rideaux</div><div class="tarif-desc" data-i="t5.d">Lavage En Profondeur</div><div class="tarif-price">60 MAD <small data-i="t.pa">/ Article</small></div></div>
       <div class="tarif-c rv" style="transition-delay:.3s"><span class="tarif-ic">🏠</span><div class="tarif-name" data-i="t6.n">Repassage Domicile</div><div class="tarif-desc" data-i="t6.d">Déplacement À Domicile Sur RDV</div><div class="tarif-price">50 MAD <small data-i="t.ps">/ Session</small></div></div>
       <div class="tarif-c rv" style="transition-delay:.35s"><span class="tarif-ic">🪟</span><div class="tarif-name" data-i="t7.n">Rideaux</div><div class="tarif-desc" data-i="t7.d">Lavage Et Entretien Spécialisé</div><div class="tarif-price">À Partir De 30 MAD <small data-i="t.pa">/ Article</small></div></div>
       <div class="tarif-c rv" style="transition-delay:.4s"><div class="tarif-badge" data-i="t.best">Meilleur Deal</div><span class="tarif-ic">⭐</span><div class="tarif-name" data-i="t8.n">Abonnement Mensuel</div><div class="tarif-desc" data-i="t8.d">Accès Prioritaire + Tarif Réduit</div><div class="tarif-price">Sur Devis</div></div>
@@ -629,8 +638,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
                 <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Lot sans repassage"><span class="sc-em">🧺</span><span class="sc-lb" data-i="sc2">Lot Sans Repassage</span></div>
                 <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Repassage domicile"><span class="sc-em">🏠</span><span class="sc-lb" data-i="sc3">Repassage Domicile</span></div>
                 <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Chaussures"><span class="sc-em">👟</span><span class="sc-lb" data-i="sc4">Chaussures</span></div>
-                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Literie"><span class="sc-em">🛏️</span><span class="sc-lb" data-i="sc5">Literie</span></div>
-                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Rideaux"><span class="sc-em">🪟</span><span class="sc-lb" data-i="sc6">Rideaux</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Literie & Rideaux"><span class="sc-em">🛏️</span><span class="sc-lb" data-i="sc5">Literie & Rideaux</span></div>
+                <div class="sc" onclick="tSc(this)"><input type="checkbox" name="Services" value="Rideaux & Coussins"><span class="sc-em">🪟</span><span class="sc-lb" data-i="sc6">Rideaux & Coussins</span></div>
               </div>
             </div>
             <div class="fg"><label data-i="f.nt">Instructions Spéciales Pour Votre Commande</label><textarea name="Instructions" class="fc" rows="3" placeholder="Ex: Attention tissu délicat, parfum préféré, code d'accès résidence..."></textarea></div>
@@ -763,7 +772,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="slide"><div class="slide-img"><img src="images/slide2.jpg" alt="Ramassage & Livraison" onerror="this.parentElement.innerHTML='🚗'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t2">Logistique</span><div class="slide-title" data-i="sl.h2">Ramassage & Livraison</div><p class="slide-desc" data-i="sl.d2">Notre Équipe De Livreurs Assure La Collecte Et La Livraison Dans Les Délais Promis.</p></div></div>
         <div class="slide"><div class="slide-img"><img src="images/slide3.jpg" alt="Repassage Soigné" onerror="this.parentElement.innerHTML='👔'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t3">Qualité</span><div class="slide-title" data-i="sl.h3">Repassage Soigné</div><p class="slide-desc" data-i="sl.d3">Un Repassage Impeccable Pour Que Vos Vêtements Soient Toujours Prêts À Porter.</p></div></div>
         <div class="slide"><div class="slide-img"><img src="images/slide4.jpg" alt="Nettoyage Chaussures" onerror="this.parentElement.innerHTML='👟'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t4">Spécialité</span><div class="slide-title" data-i="sl.h4">Nettoyage Chaussures</div><p class="slide-desc" data-i="sl.d4">Vos Sneakers Et Chaussures Entretenues Comme Neuves Par Nos Spécialistes.</p></div></div>
-        <div class="slide"><div class="slide-img"><img src="images/slide5.jpg" alt="Literie & Couettes" onerror="this.parentElement.innerHTML='🛏️'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t5">Maison</span><div class="slide-title" data-i="sl.h5">Literie & Couettes</div><p class="slide-desc" data-i="sl.d5">Un Lavage En Profondeur Pour Une Literie Fraîche Et Hygiénique Au Quotidien.</p></div></div>
+        <div class="slide"><div class="slide-img"><img src="images/slide5.jpg" alt="Literie & Rideaux" onerror="this.parentElement.innerHTML='🛏️'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t5">Maison</span><div class="slide-title" data-i="sl.h5">Literie & Couettes</div><p class="slide-desc" data-i="sl.d5">Un Lavage En Profondeur Pour Une Literie Fraîche Et Hygiénique Au Quotidien.</p></div></div>
         <div class="slide"><div class="slide-img"><img src="images/slide6.jpg" alt="Abonnement Mensuel" onerror="this.parentElement.innerHTML='⭐'"></div><div class="slide-info"><span class="slide-tag" data-i="sl.t6">Premium</span><div class="slide-title" data-i="sl.h6">Abonnement Mensuel</div><p class="slide-desc" data-i="sl.d6">Rejoignez Notre Programme Premium Et Bénéficiez De Tarifs Préférentiels Et D'un Accès Prioritaire.</p></div></div>
       </div>
       <div class="slide-nav">
@@ -895,7 +904,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
           <li><a href="#services" data-i="v2.t">Lavage Par Lot</a></li>
           <li><a href="#services" data-i="v3.t">Repassage Domicile</a></li>
           <li><a href="#services" data-i="v4.t">Chaussures</a></li>
-          <li><a href="#services" data-i="v5.t">Literie & Couette</a></li>
+          <li><a href="#services" data-i="v5.t">Literie & Rideaux</a></li>
           <li><a href="#services" data-i="v6.t">Abonnement Premium</a></li>
         </ul>
       </div>
@@ -920,7 +929,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     </div>
     <div class="f-bot">
       <span class="f-copy">© 2026 MyFRESH — Tous Droits Réservés</span>
-      <span style="font-size:11px;color:rgba(255,255,255,.2)">Tanger, Maroc</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.2)" data-i="ft.loc">Tanger, Maroc</span>
     </div>
   </div>
 </footer>
@@ -993,12 +1002,12 @@ fr:{
 's3.t':'Livré À Votre Porte','s3.d':'Votre Linge Propre Et Plié Vous Est Livré. Suivez Chaque Étape En Temps Réel Depuis Votre Compte.',
 'svc.lbl':'Nos Services','svc.title':'Tout Ce Dont Vous Avez Besoin',
 'svc.sub':'Du T-shirt À La Couette XXL, Un Service De Qualité À Un Prix Compétitif',
-'v.pop':'Le Plus Populaire','v.eco':'Économique','v.hm':'À Domicile','v.sp':'Spécialité Maison','v.mai':'Maison & Confort','v.ex':'Exclusif — Abonnement Premium',
+'v.pop':'Le Plus Populaire','v.eco':'Économique','v.hm':'À Domicile','v.sp':'Spécialité Maison','v.mai':'Maison & Confort','v.ex':'Offre Exclusive',
 'v1.t':'Lavage & Repassage Par Pièce','v1.d':'Chaque Vêtement Traité Individuellement Avec Soin. Parfait Pour Vos Tenues Professionnelles Et Spéciales.',
 'v2.t':'Lavage Par Lot (Sans Repassage)','v2.d':'Lavage En Lot Pour Votre Quotidien. Idéal Pour Les Étudiants Avec Un Volume Important De Linge.',
 'v3.t':'Repassage À Domicile Sur RDV','v3.d':'Notre Agent Se Déplace Chez Vous Selon Votre Disponibilité Pour Repasser Vos Vêtements Sur Place.',
 'v4.t':'Nettoyage Chaussures','v4.d':'Sneakers, Chaussures De Ville Et Bottes Remises À Neuf. Un Traitement Professionnel Et Soigné.',
-'v5.t':'Literie & Couette','v5.d':'Lavage En Profondeur De Votre Literie, Couettes Et Draps. Hygiène Et Fraîcheur Garanties.',
+'v5.t':'Literie & Rideaux','v5.d':'Lavage En Profondeur De Votre Literie, Draps Et Rideaux. Hygiène Et Fraîcheur Garanties.',
 'v6.t':'Rideaux, Coussins & Nounours','v6.d':'Service Exclusif Pour Vos Articles Hors Vêtements. Abonnement Mensuel Avec Priorité Et Tarif Préférentiel.',
 'tar.lbl':'Grille Tarifaire','tar.title':'Des Prix Transparents Et Compétitifs',
 'tar.sub':'Chaque Service À Son Prix Juste. Aucune Surprise À La Livraison.',
@@ -1006,7 +1015,7 @@ fr:{
 't2.n':'Lot Standard','t2.d':'Lavage En Lot (Sans Repassage)',
 't3.n':'Pantalon / Jeans','t3.d':'Lavage + Repassage Individuel',
 't4.n':'Chaussures','t4.d':'Nettoyage Professionnel Complet',
-'t5.n':'Literie & Couette','t5.d':'Lavage En Profondeur',
+'t5.n':'Literie & Rideaux','t5.d':'Lavage En Profondeur',
 't6.n':'Repassage Domicile','t6.d':'Déplacement À Domicile Sur RDV',
 't7.n':'Rideaux','t7.d':'Lavage Et Entretien Spécialisé',
 't8.n':'Abonnement Mensuel','t8.d':'Accès Prioritaire + Tarif Réduit',
@@ -1019,7 +1028,7 @@ fr:{
 'f.nm':'Prénom & Nom','f.ph':'Téléphone','f.em':'Email','f.opt':'(Optionnel)',
 'f.ad':'Adresse De Ramassage','f.dt':'Date Souhaitée','f.sl':'Créneau Horaire',
 'f.sv':'Services Souhaités','f.nt':'Instructions Spéciales Pour Votre Commande','f.sub':'✦ Envoyer Ma Commande',
-'sc1':'Lavage & Repassage','sc2':'Lot Sans Repassage','sc3':'Repassage Domicile','sc4':'Chaussures','sc5':'Literie & Couette','sc6':'Rideaux & Coussins',
+'sc1':'Lavage & Repassage','sc2':'Lot Sans Repassage','sc3':'Repassage Domicile','sc4':'Chaussures','sc5':'Literie & Rideaux','sc6':'Rideaux & Coussins',
 'ok.t':'Commande Envoyée !','ok.d':'Nous Vous Contactons Dans Les 30 Minutes Pour Confirmer Le Ramassage. Merci De Faire Confiance À MyFRESH !',
 'stats.lbl':'Pourquoi MyFRESH','stats.title':'Ton Linge Propre, Avec Zéro Effort.',
 'st1.t':'Plus De 1000 Clients Satisfaits','st1.d':'Une Communauté De Confiance À Tanger. Chaque Client Est Unique Et Mérite Le Meilleur Service.',
@@ -1057,7 +1066,7 @@ fr:{
 'q4.q':'Que Se Passe-t-il Si Un Article Est Endommagé ?','q4.a':'Tous Vos Articles Sont Assurés Pendant L\'intégralité Du Processus. En Cas De Dommage, Nous Prenons En Charge Le Remplacement Ou Procédons À Un Remboursement Intégral Sans Discussion.',
 'q5.q':'Puis-Je Annuler Ou Modifier Ma Commande ?','q5.a':'Oui, Vous Pouvez Annuler Ou Modifier Votre Commande Jusqu\'à 1H Avant Le Ramassage Prévu Via WhatsApp, Par Téléphone Ou Depuis Votre Espace Client Sur Le Site.',
 'q6.q':'Comment Fonctionne L\'abonnement Mensuel ?','q6.a':'L\'abonnement Mensuel Vous Donne Accès À Des Tarifs Préférentiels, Une Priorité De Prise En Charge Et Un Suivi Personnalisé. Contactez-Nous Pour Obtenir Un Devis Adapté À Vos Besoins.',
-'ft.svc':'Services','ft.nav':'Navigation','ft.ct':'Contact','ft.login':'Mon Compte','ft.made':'Tanger, Maroc',
+'ft.svc':'Services','ft.nav':'Navigation','ft.ct':'Contact','ft.login':'Mon Compte','ft.made':'Conçu Avec ❤️ À Tanger','ft.loc':'Tanger, Maroc',
 'nav.account':'Mon Compte',
 'esp.lbl':'Espace Personnel','esp.title':'Votre Compte MyFRESH',
 'esp.sub':'Créez votre compte pour accéder à votre espace personnel. Suivez vos commandes, consultez votre historique et restez informé à chaque étape.',
@@ -1072,7 +1081,7 @@ en:{
 'nav.how':'How It Works','nav.svc':'Services','nav.tarif':'Pricing','nav.proc':'Tracking','nav.book':'Book Now',
 'hero.badge':'Tangier, Morocco — Premium Service',
 'hero.h1':'Your Laundry & Home Care Platform',
-'hero.sub':'We Clear, You Relax.',
+'hero.sub':'We Clean, You Relax.',
 'hero.c1':'✦ Order Now','hero.c2':'Explore Our Services →',
 'st.cl':'Clients','st.flex':'Flexibility','st.h':'H/7 Available','st.rt':'% Satisfaction',
 'part.lbl':'Our Partners',
@@ -1083,20 +1092,20 @@ en:{
 's3.t':'Delivered To Your Door','s3.d':'Your Clean And Folded Laundry Is Delivered To You. Track Every Step In Real Time From Your Account.',
 'svc.lbl':'Our Services','svc.title':'Everything You Need',
 'svc.sub':'From A Simple T-shirt To An XXL Duvet, Quality Service At A Competitive Price',
-'v.pop':'Most Popular','v.eco':'Economical','v.hm':'At Home','v.sp':'House Specialty','v.mai':'Home & Comfort','v.ex':'Exclusive — Monthly Subscription',
+'v.pop':'Most Popular','v.eco':'Economical','v.hm':'At Home','v.sp':'House Specialty','v.mai':'Home & Comfort','v.ex':'Exclusive Offer',
 'v1.t':'Wash & Iron Per Item','v1.d':'Each Garment Treated Individually With Care. Perfect For Your Professional And Special Outfits.',
 'v2.t':'Batch Wash (No Ironing)','v2.d':'Batch Washing For Your Everyday Laundry. Ideal For Students With Large Volumes.',
 'v3.t':'Home Ironing By Appointment','v3.d':'Our Agent Comes To Your Home At Your Convenience To Iron Your Clothes On-Site.',
 'v4.t':'Shoe Cleaning','v4.d':'Sneakers, Dress Shoes And Boots Restored Like New. Professional And Careful Treatment.',
-'v5.t':'Bedding & Duvets','v5.d':'Deep Washing Of Your Bedding, Duvets And Sheets. Guaranteed Hygiene And Freshness.',
-'v6.t':'Curtains, Cushions & Soft Toys','v6.d':'Exclusive Service For Non-Clothing Items. Monthly Subscription With Priority And Preferential Rates.',
+'v5.t':'Bedding & Curtains','v5.d':'Deep Washing Of Your Bedding, Sheets And Curtains. Guaranteed Hygiene And Freshness.',
+'v6.t':'Curtains, Cushions & Soft Toys','v6.d':'Subscription. Subscribe and access all our services at preferential rates. Priority processing, enhanced tracking and total flexibility across the full range.',
 'tar.lbl':'Pricing Grid','tar.title':'Transparent And Competitive Prices',
 'tar.sub':'Every Service At Its Fair Price. No Surprises At Delivery.',
 't1.n':'Shirt / T-shirt','t1.d':'Individual Wash + Iron',
 't2.n':'Standard Batch','t2.d':'Batch Washing (No Ironing)',
 't3.n':'Pants / Jeans','t3.d':'Individual Wash + Iron',
 't4.n':'Shoes','t4.d':'Complete Professional Cleaning',
-'t5.n':'Bedding & Duvet','t5.d':'Deep Washing',
+'t5.n':'Bedding & Curtains','t5.d':'Deep Washing',
 't6.n':'Home Ironing','t6.d':'Home Visit By Appointment',
 't7.n':'Curtains','t7.d':'Specialized Washing And Care',
 't8.n':'Monthly Subscription','t8.d':'Priority Access + Reduced Rates',
@@ -1109,7 +1118,7 @@ en:{
 'f.nm':'First & Last Name','f.ph':'Phone','f.em':'Email','f.opt':'(Optional)',
 'f.ad':'Pickup Address','f.dt':'Preferred Date','f.sl':'Time Slot',
 'f.sv':'Requested Services','f.nt':'Special Instructions For Your Order','f.sub':'✦ Send My Order',
-'sc1':'Wash & Iron','sc2':'Batch (No Iron)','sc3':'Home Ironing','sc4':'Shoes','sc5':'Bedding & Duvet','sc6':'Curtains & Cushions',
+'sc1':'Wash & Iron','sc2':'Batch (No Iron)','sc3':'Home Ironing','sc4':'Shoes','sc5':'Bedding & Curtains','sc6':'Curtains & Cushions',
 'ok.t':'Order Sent!','ok.d':'We\'ll Contact You Within 30 Minutes To Confirm Pickup. Thank You For Trusting MyFRESH!',
 'stats.lbl':'Why MyFRESH','stats.title':'Your Clean Laundry, With Zero Effort.',
 'st1.t':'Over 1000 Satisfied Clients','st1.d':'A Trusted Community In Tangier. Every Client Is Unique And Deserves The Best Service.',
@@ -1138,7 +1147,7 @@ en:{
 'sl.t2':'Logistics','sl.h2':'Pickup & Delivery','sl.d2':'Our Delivery Team Ensures Collection And Delivery Within The Promised Timeframes.',
 'sl.t3':'Quality','sl.h3':'Careful Ironing','sl.d3':'Impeccable Ironing So Your Clothes Are Always Ready To Wear.',
 'sl.t4':'Specialty','sl.h4':'Shoe Cleaning','sl.d4':'Your Sneakers And Shoes Maintained Like New By Our Specialists.',
-'sl.t5':'Home','sl.h5':'Bedding & Duvets','sl.d5':'Deep Washing For Fresh And Hygienic Bedding Every Day.',
+'sl.t5':'Home','sl.h5':'Bedding & Curtains','sl.d5':'Deep Washing For Fresh And Hygienic Bedding Every Day.',
 'sl.t6':'Premium','sl.h6':'Monthly Subscription','sl.d6':'Join Our Premium Program And Benefit From Preferential Rates And Priority Access.',
 'fq.title':'Frequently Asked Questions',
 'q1.q':'What Are Your Delivery Times?','q1.a':'We Generally Deliver Within 24 To 48H After Pickup. For Urgent Orders, An Express 12H Service Is Available On Request Via WhatsApp.',
@@ -1147,7 +1156,7 @@ en:{
 'q4.q':'What Happens If An Item Is Damaged?','q4.a':'All Your Items Are Insured Throughout The Entire Process. In Case Of Damage, We Cover Replacement Or Proceed With A Full Refund Without Discussion.',
 'q5.q':'Can I Cancel Or Modify My Order?','q5.a':'Yes, You Can Cancel Or Modify Your Order Up To 1H Before The Scheduled Pickup Via WhatsApp, By Phone Or From Your Client Account On The Site.',
 'q6.q':'How Does The Monthly Subscription Work?','q6.a':'The Monthly Subscription Gives You Access To Preferential Rates, Priority Processing And Personalized Follow-Up. Contact Us For A Quote Tailored To Your Needs.',
-'ft.svc':'Services','ft.nav':'Navigation','ft.ct':'Contact','ft.login':'My Account','ft.made':'Tangier, Morocco',
+'ft.svc':'Services','ft.nav':'Navigation','ft.ct':'Contact','ft.login':'My Account','ft.made':'Made With ❤️ In Tangier','ft.loc':'Tangier, Morocco',
 'nav.account':'My Account',
 'esp.lbl':'Personal Space','esp.title':'Your MyFRESH Account',
 'esp.sub':'Create your account to access your personal space. Track your orders, view your history and stay informed at every step.',
@@ -1173,20 +1182,20 @@ es:{
 's3.t':'Entregado En Tu Puerta','s3.d':'Tu Ropa Limpia Y Doblada Te Es Entregada. Sigue Cada Etapa En Tiempo Real Desde Tu Cuenta.',
 'svc.lbl':'Nuestros Servicios','svc.title':'Todo Lo Que Necesitas',
 'svc.sub':'De La Camiseta Al Edredón XXL, Un Servicio De Calidad A Un Precio Competitivo',
-'v.pop':'El Más Popular','v.eco':'Económico','v.hm':'A Domicilio','v.sp':'Especialidad Casa','v.mai':'Hogar & Confort','v.ex':'Exclusivo — Suscripción Mensual',
+'v.pop':'El Más Popular','v.eco':'Económico','v.hm':'A Domicilio','v.sp':'Especialidad Casa','v.mai':'Hogar & Confort','v.ex':'Oferta Exclusiva',
 'v1.t':'Lavado Y Planchado Por Pieza','v1.d':'Cada Prenda Tratada Individualmente Con Cuidado. Perfecto Para Tus Trajes Profesionales Y Especiales.',
 'v2.t':'Lavado Por Lote (Sin Planchar)','v2.d':'Lavado En Lote Para Tu Día A Día. Ideal Para Estudiantes Con Un Gran Volumen De Ropa.',
 'v3.t':'Planchado A Domicilio Con Cita','v3.d':'Nuestro Agente Va A Tu Casa Cuando Puedas Para Planchar Tu Ropa In Situ.',
 'v4.t':'Limpieza De Zapatos','v4.d':'Zapatillas, Zapatos De Ciudad Y Botas Restaurados Como Nuevos. Tratamiento Profesional Y Cuidadoso.',
-'v5.t':'Ropa De Cama Y Edredones','v5.d':'Lavado En Profundidad De Tu Ropa De Cama, Edredones Y Sábanas. Higiene Y Frescura Garantizadas.',
-'v6.t':'Cortinas, Cojines Y Peluches','v6.d':'Servicio Exclusivo Para Artículos No Textiles. Suscripción Mensual Con Prioridad Y Tarifa Preferencial.',
+'v5.t':'Ropa De Cama & Cortinas','v5.d':'Lavado En Profundidad De Tu Ropa De Cama, Edredones Y Sábanas. Higiene Y Frescura Garantizadas.',
+'v6.t':'Cortinas, Cojines Y Peluches','v6.d':'Suscripción. Suscríbete y accede a todos nuestros servicios a tarifa preferencial. Prioridad, seguimiento reforzado y flexibilidad total en toda la gama.',
 'tar.lbl':'Tarifa','tar.title':'Precios Transparentes Y Competitivos',
 'tar.sub':'Cada Servicio A Su Precio Justo. Sin Sorpresas En La Entrega.',
 't1.n':'Camisa / Camiseta','t1.d':'Lavado + Planchado Individual',
 't2.n':'Lote Estándar','t2.d':'Lavado En Lote (Sin Planchar)',
 't3.n':'Pantalón / Jeans','t3.d':'Lavado + Planchado Individual',
 't4.n':'Zapatos','t4.d':'Limpieza Profesional Completa',
-'t5.n':'Ropa De Cama','t5.d':'Lavado En Profundidad',
+'t5.n':'Ropa De Cama & Cortinas','t5.d':'Lavado En Profundidad',
 't6.n':'Planchado Domicilio','t6.d':'Visita A Domicilio Con Cita',
 't7.n':'Cortinas','t7.d':'Lavado Y Cuidado Especializado',
 't8.n':'Suscripción Mensual','t8.d':'Acceso Prioritario + Tarifa Reducida',
@@ -1199,7 +1208,7 @@ es:{
 'f.nm':'Nombre Y Apellido','f.ph':'Teléfono','f.em':'Email','f.opt':'(Opcional)',
 'f.ad':'Dirección De Recogida','f.dt':'Fecha Deseada','f.sl':'Franja Horaria',
 'f.sv':'Servicios Deseados','f.nt':'Instrucciones Especiales Para Tu Pedido','f.sub':'✦ Enviar Mi Pedido',
-'sc1':'Lavado Y Planchado','sc2':'Lote Sin Planchar','sc3':'Planchado Domicilio','sc4':'Zapatos','sc5':'Ropa De Cama','sc6':'Cortinas Y Cojines',
+'sc1':'Lavado Y Planchado','sc2':'Lote Sin Planchar','sc3':'Planchado Domicilio','sc4':'Zapatos','sc5':'Ropa De Cama & Cortinas','sc6':'Cortinas Y Cojines',
 'ok.t':'¡Pedido Enviado!','ok.d':'Te Contactaremos En 30 Minutos Para Confirmar La Recogida. ¡Gracias Por Confiar En MyFRESH!',
 'stats.lbl':'Por Qué MyFRESH','stats.title':'Tu Ropa Limpia, Con Cero Esfuerzo.',
 'st1.t':'Más De 1000 Clientes Satisfechos','st1.d':'Una Comunidad De Confianza En Tánger. Cada Cliente Es Único Y Merece El Mejor Servicio.',
@@ -1237,7 +1246,7 @@ es:{
 'q4.q':'¿Qué Pasa Si Un Artículo Se Daña?','q4.a':'Todos Tus Artículos Están Asegurados Durante Todo El Proceso. En Caso De Daño, Cubrimos El Reemplazo O Procedemos Con Un Reembolso Completo Sin Discusión.',
 'q5.q':'¿Puedo Cancelar O Modificar Mi Pedido?','q5.a':'Sí, Puedes Cancelar O Modificar Tu Pedido Hasta 1H Antes De La Recogida Programada Vía WhatsApp, Por Teléfono O Desde Tu Cuenta En El Sitio.',
 'q6.q':'¿Cómo Funciona La Suscripción Mensual?','q6.a':'La Suscripción Mensual Te Da Acceso A Tarifas Preferenciales, Prioridad En La Atención Y Seguimiento Personalizado. Contáctanos Para Un Presupuesto Adaptado A Tus Necesidades.',
-'ft.svc':'Servicios','ft.nav':'Navegación','ft.ct':'Contacto','ft.login':'Mi Cuenta','ft.made':'Tánger, Marruecos',
+'ft.svc':'Servicios','ft.nav':'Navegación','ft.ct':'Contacto','ft.login':'Mi Cuenta','ft.made':'Hecho Con ❤️ En Tánger','ft.loc':'Tánger, Marruecos',
 'nav.account':'Mi Cuenta',
 'esp.lbl':'Espacio Personal','esp.title':'Tu Cuenta MyFRESH',
 'esp.sub':'Crea tu cuenta para acceder a tu espacio personal. Sigue tus pedidos, consulta tu historial y mantente informado en cada etapa.',
@@ -1276,18 +1285,59 @@ function setStar(n){
 }
 setStar(5);
 
-/* WEB3FORMS */
+/* WEB3FORMS + SUPABASE */
 document.getElementById('mf').addEventListener('submit',async function(e){
   e.preventDefault();
   const btn=this.querySelector('.fsub');
   btn.textContent='⏳ Envoi...';btn.disabled=true;
+
   try{
-    const fd=new FormData(this);
-    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
-    const data=await res.json();
-    if(data.success){this.style.display='none';document.getElementById('fs').style.display='block';}
-    else{btn.textContent=T[lang]['f.sub']||'✦ Envoyer';btn.disabled=false;alert('Erreur. Réessayez ou contactez via WhatsApp.');}
-  }catch{btn.textContent=T[lang]['f.sub']||'✦ Envoyer';btn.disabled=false;alert('Erreur réseau.');}
+    // ── Récupérer les valeurs du formulaire ──
+    const nom     = this.querySelector('[name="Nom complet"]').value.trim();
+    const tel     = this.querySelector('[name="Téléphone"]').value.trim();
+    const email   = this.querySelector('[name="Email"]').value.trim();
+    const adresse = this.querySelector('[name="Adresse"]').value.trim();
+    const date    = this.querySelector('[name="Date souhaitée"]').value;
+    const creneau = this.querySelector('[name="Créneau"]').value;
+    const note    = this.querySelector('[name="Instructions"]').value.trim();
+
+    // Services cochés
+    const services = [...this.querySelectorAll('[name="Services"]:checked')]
+      .map(s=>s.value).join(', ');
+
+    // ── 1. Enregistrer dans Supabase ──
+    const { data:{ session } } = await sb.auth.getSession();
+    const commande = {
+      nom_client   : nom,
+      telephone    : tel,
+      email        : email||null,
+      adresse      : adresse,
+      date_souhaitee: date||null,
+      creneau      : creneau,
+      services     : services||'Non précisé',
+      note         : note||null,
+      statut       : 'En attente',
+      total_estime : 0,
+    };
+    if(session?.user?.id) commande.client_id = session.user.id;
+
+    const { error:sbErr } = await sb.from('commandes').insert([commande]);
+    if(sbErr) console.warn('Supabase insert warning:', sbErr.message);
+
+    // ── 2. Envoyer email via Web3Forms ──
+    const fd = new FormData(this);
+    await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+
+    // ── Succès ──
+    this.style.display='none';
+    document.getElementById('fs').style.display='block';
+
+  }catch(err){
+    console.error(err);
+    btn.textContent=T[lang]['f.sub']||'✦ Envoyer';
+    btn.disabled=false;
+    alert('Erreur. Réessayez ou contactez via WhatsApp.');
+  }
 });
 document.getElementById('rf').addEventListener('submit',async function(e){
   e.preventDefault();
